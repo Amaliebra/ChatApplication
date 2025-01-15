@@ -1,4 +1,8 @@
 ﻿<Window x:Class="ChatClient.MainWindow"
+        ResizeMode="CanResizeWithGrip"
+        Background="#FFEAEAEA"
+        WindowStyle="None"
+        AllowsTransparency="True"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,34 +10,115 @@
         xmlns:local="clr-namespace:ChatClient"
         xmlns:viewmodel="clr-namespace:ChatClient.MVVM.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid Background="#FFEAEAEA">
-        <TextBlock HorizontalAlignment="Left" Margin="183,349,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="500" Height="50" Background="White" Foreground="#FF212121" Cursor="Wait" IsEnabled="False">
+        Title="MainWindow" Height="650" Width="1000">
+    <Window.DataContext>
+        <viewmodel:MainViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Left" 
+                   Margin="183,349,0,0" 
+                   TextWrapping="Wrap" 
+                   VerticalAlignment="Top" 
+                   Width="500" 
+                   Height="50" 
+                   Background="White" 
+                   Foreground="#FF212121" 
+                   IsEnabled="False">
             <TextBlock.Effect>
                 <DropShadowEffect BlurRadius="5" Direction="320" ShadowDepth="1" Color="#FFD0D0D0"/>
             </TextBlock.Effect><Run Text="T"/><Run Language="nb-no" Text="ype a message"/></TextBlock>
-        <Button x:Name="sendButton" Content="SEND" HorizontalAlignment="Left" Margin="693,349,0,0" VerticalAlignment="Top" Height="50" Width="80" Background="White" BorderThickness="0" Foreground="#FF212121">
+        <Button x:Name="sendButton" 
+                Content="SEND" 
+                HorizontalAlignment="Left" 
+                Margin="693,349,0,0" 
+                VerticalAlignment="Top" 
+                Height="50" Width="80" 
+                Background="White" 
+                BorderThickness="0" 
+                Foreground="#FF212121">
             <Button.Effect>
-                <DropShadowEffect BlurRadius="5" Direction="320" ShadowDepth="1" Color="#FFD0D0D0"/>
-
+                <DropShadowEffect 
+                    BlurRadius="5" 
+                    Direction="320" 
+                    ShadowDepth="1" 
+                    Color="#FFD0D0D0"/>
             </Button.Effect>
         </Button>
-        <Border BorderThickness="0" HorizontalAlignment="Left" Height="403" Margin="0,31,0,0" VerticalAlignment="Top" Width="163" Grid.RowSpan="2" Background="#FFC4FFBF">
+        <Border BorderThickness="0" 
+                HorizontalAlignment="Left" 
+                Height="403" Margin="0,31,0,0" 
+                VerticalAlignment="Top" 
+                Width="163" 
+                Grid.RowSpan="2" 
+                Background="#FFC4FFBF">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="5" Direction="320" ShadowDepth="1" Color="#FFD0D0D0"/>
+                <DropShadowEffect 
+                    BlurRadius="5" 
+                    Direction="320" 
+                    ShadowDepth="1" 
+                    Color="#FFD0D0D0"/>
             </Border.Effect>
         </Border>
-        <Border BorderThickness="0" HorizontalAlignment="Center" Height="31" VerticalAlignment="Top" Width="800" Background="White">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="5" Direction="320" ShadowDepth="1" Color="#FFD0D0D0"/>
+        <Border Grid.ColumnSpan="2" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Background="White">
+            <Grid HorizontalAlignment="Stretch">
+                <Image HorizontalAlignment="Left" 
+                       Height="23" Margin="10,4,0,0" 
+                       VerticalAlignment="Top" 
+                       Width="23" 
+                       RenderTransformOrigin="-2.087,0.958" 
+                       Source="/MVVM/View/Group 1.png">
+                    <Image.OpacityMask>
+                        <ImageBrush ImageSource="/MVVM/View/Group 1.png" 
+                                    Stretch="Fill" 
+                                    TileMode="None"/>
+                    </Image.OpacityMask>
+                </Image>
+                <Label Content="LilyChat"
+                       Foreground="Gray"
+                       FontWeight="Bold"
+                       FontSize="14"/>
 
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Height="20" Width="20"
+                            Background="Pink"
+                            Content="🗕"
+                            BorderThickness="0"
+                            FontWeight="Bold"
+                            Foreground="Gray"
+                            Margin="0,0,0,3"/>
+                    <Button Height="20" Width="20"
+                            Background="Pink"
+                            Content="□"
+                            BorderThickness="0"
+                            FontWeight="Bold"
+                            Foreground="Gray"/>
+                    <Button Height="20" Width="20"
+                            Background="Pink"
+                            Content="X"
+                            BorderThickness="0"
+                            FontWeight="Bold"
+                            Foreground="Gray"/>
+                </StackPanel>
+            </Grid>
+            <Border.Effect>
+                <DropShadowEffect 
+                    BlurRadius="5" 
+                    Direction="320" 
+                    ShadowDepth="1" 
+                    Color="#FFD0D0D0"/>
             </Border.Effect>
         </Border>
-        <Image HorizontalAlignment="Left" Height="23" Margin="11,3,0,0" VerticalAlignment="Top" Width="23" RenderTransformOrigin="-2.087,0.958" Source="/MVVM/View/Group 1.png">
-            <Image.OpacityMask>
-                <ImageBrush ImageSource="/MVVM/View/Group 1.png" Stretch="Fill" TileMode="None"/>
-            </Image.OpacityMask>
-        </Image>
 
     </Grid>
 </Window>
