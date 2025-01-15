@@ -12,7 +12,6 @@
   <ItemGroup>
     <Folder Include="MVVM\Core\" />
     <Folder Include="MVVM\Model\" />
-    <Folder Include="MVVM\ViewModel\" />
   </ItemGroup>
 
 </Project>

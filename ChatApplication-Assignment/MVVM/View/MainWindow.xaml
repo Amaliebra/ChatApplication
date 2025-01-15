@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:ChatApplication_Assignment"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <viewmodel:MainViewModel/>
+    </Window.DataContext>
     <Grid>
-
     </Grid>
 </Window>
