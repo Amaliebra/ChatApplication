@@ -12,6 +12,7 @@
   <ItemGroup>
     <Folder Include="MVVM\Core\" />
     <Folder Include="MVVM\Model\" />
+    <Folder Include="Net\IO\" />
   </ItemGroup>
 
 </Project>
