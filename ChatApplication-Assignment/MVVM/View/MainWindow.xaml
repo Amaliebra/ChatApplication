@@ -7,8 +7,28 @@
         xmlns:viewmodel="clr-namespace:ChatClient.MVVM.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="52" Margin="551,60,0,0" VerticalAlignment="Top" Width="168"/>
+    <Grid Background="#FFEFEFEF">
+        <TextBlock HorizontalAlignment="Left" Margin="187,374,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="500" Height="50" Background="White" Foreground="#FF212121" Cursor="Wait" IsEnabled="False">
+            <TextBlock.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="320" ShadowDepth="1" Color="#FFD0D0D0"/>
+            </TextBlock.Effect><Run Text="T"/><Run Language="nb-no" Text="ype a message"/></TextBlock>
+        <Button x:Name="sendButton" Content="SEND" HorizontalAlignment="Left" Margin="700,374,0,0" VerticalAlignment="Top" Height="50" Width="80" Background="White" BorderThickness="0" Foreground="#FF212121">
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="320" ShadowDepth="1" Color="#FFD0D0D0"/>
+
+            </Button.Effect>
+        </Button>
+        <Border BorderThickness="0" HorizontalAlignment="Left" Height="403" Margin="0,31,0,0" VerticalAlignment="Top" Width="163" Grid.RowSpan="2" Background="White">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="320" ShadowDepth="1" Color="#FFD0D0D0"/>
+            </Border.Effect>
+        </Border>
+        <Border BorderThickness="0" HorizontalAlignment="Center" Height="31" VerticalAlignment="Top" Width="800" Background="White">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="320" ShadowDepth="1" Color="#FFD0D0D0"/>
+
+            </Border.Effect>
+        </Border>
 
     </Grid>
 </Window>
