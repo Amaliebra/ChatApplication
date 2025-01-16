@@ -105,11 +105,13 @@
                 VerticalAlignment="Center"
                 Content="Contacts"
                 FontWeight="Medium"
-                Foreground="#FF2F2E2E"/>
-            <ListView ItemsSource="{Binding }"
-                      Background="Transparent"
-                      BorderThickness="0"
-                      Grid.Row="1"/>
+                Foreground="#FF2F2E2E" />
+            <ListView
+                Grid.Row="1"
+                Background="Transparent"
+                BorderThickness="0"
+                ItemContainerStyle="{StaticResource ContactStyle}"
+                ItemsSource="{Binding}" />
 
         </Grid>
 
