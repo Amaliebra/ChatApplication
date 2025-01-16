@@ -22,13 +22,27 @@ namespace ChatClient.Net.IO
 
         public string ReadString()
         {
-            byte[] msgbuffer;
-            var length = ReadInt32();
-            msgbuffer = new byte[length];
-            _stream.Read(msgbuffer, 0, length);
+            var length = ReadUInt16();
+            var message = new string(ReadChars(length));
+            return message;
+        }
 
-            var msg = Encoding.UTF8.GetString(msgbuffer);
-            return msg;
+        public async Task<byte> ReadOpcodeAsync()
+        {
+            var buffer = new byte[1];
+            await BaseStream.ReadAsync(buffer, 0, 1);
+            return buffer[0];
+        }
+
+        public async Task<string> ReadStringAsync()
+        {
+            var lengthBuffer = new byte[2];
+            await BaseStream.ReadAsync(lengthBuffer, 0, 2);
+            var length = BitConverter.ToInt16(lengthBuffer, 0);
+
+            var stringBuffer = new byte[length];
+            await BaseStream.ReadAsync(stringBuffer, 0, length);
+            return Encoding.UTF8.GetString(stringBuffer);
 
         }
     }

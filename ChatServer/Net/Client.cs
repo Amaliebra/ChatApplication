@@ -10,16 +10,55 @@ namespace ChatServer.Net
 {
     class Client
     {
-        public string Username { get; set; }
-        public Guid UID { get; set; }
-        public TcpClient TcpClient { get; set; }
+        public string Username { get; private set; }
+        public Guid UID { get; private set; }
+        public TcpClient ClientSocket { get; private set; }
 
-        PacketReader _packetReader;
-        public Client(TcpClient tcpClient)
+        private PacketReader _packetReader;
+
+        public event Action<Client, string> MessageReceived;
+        public event Action<Client> Disconnected;
+
+        public Client(TcpClient client)
         {
-            TcpClient = tcpClient;
+            ClientSocket = client;
             UID = Guid.NewGuid();
-            _packetReader = new PacketReader(tcpClient.GetStream());
+            _packetReader = new PacketReader(ClientSocket.GetStream());
+
+            var opcode = _packetReader.ReadOpcode();
+            Username = _packetReader.ReadString();
+
+            Console.WriteLine($"{Username} connected!");
+
+            Task.Run(() => ProcessAsync());
+        }
+
+        private async Task ProcessAsync()
+        {
+            try
+            {
+                while (true)
+                {
+                    var opcode = await _packetReader.ReadOpcodeAsync();
+                    switch (opcode)
+                    {
+                        case 5:
+                            var message = await _packetReader.ReadStringAsync();
+                            Console.WriteLine($"[{DateTime.Now}] {message}");
+                            MessageReceived?.Invoke(this, message);
+                            break;
+                        default:
+                            Console.WriteLine($"Unknown opcode: {opcode}");
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{UID}{Username} Disconnected {ex.Message}");
+                Disconnected?.Invoke(this);
+                ClientSocket.Close();
+            }
         }
     }
 }
