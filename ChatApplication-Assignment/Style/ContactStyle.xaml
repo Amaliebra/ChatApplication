@@ -25,11 +25,11 @@
                                 Background="PaleVioletRed"
                                 CornerRadius="25" />
                             <StackPanel>
-                                <Label Content="{Binding Username}" Foreground="Black" />
+                                <Label Content="{Binding Username}" Foreground="#FF2F2E2E" />
                                 <Label
                                     Content="{Binding LastMessage}"
                                     FontSize="9"
-                                    Foreground="Black" />
+                                    Foreground="#FF2F2E2E" />
                             </StackPanel>
 
                         </StackPanel>

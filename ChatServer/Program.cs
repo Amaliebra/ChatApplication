@@ -3,15 +3,21 @@ using ChatServer.Net.IO;
 using System.Net;
 using System.Net.Sockets;
 
-public class ChatServerProgram
+public class Program
 {
     private TcpListener _server;
     private List<TcpClient> _clients;
 
-    public ChatServerProgram(string ip, int port)
+    public Program(string ip, int port)
     {
         _server = new TcpListener(IPAddress.Any, port);
         _clients = new List<TcpClient>();
+    }
+
+    public static async Task Main(string[] args)
+    {
+        var program = new Program("127.0.0.1", 5000);
+        await program.StartAsync();
     }
 
     public async Task StartAsync()
@@ -50,14 +56,11 @@ public class ChatServerProgram
                     await stream.WriteAsync(packetBytes, 0, packetBytes.Length);
                 }
             }
-
         }
         catch (Exception)
         {
             _clients.Remove(client);
             Console.WriteLine("Client disconnected");
         }
-
     }
-
 }
