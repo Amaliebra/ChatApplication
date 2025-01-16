@@ -30,8 +30,25 @@ public partial class MainWindow : Window
 
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private void MinimizeButton_Click(object sender, RoutedEventArgs e)
     {
+        Application.Current.MainWindow.WindowState = WindowState.Minimized;
+    }
 
+    private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        if(Application.Current.MainWindow.WindowState != WindowState.Maximized)
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Maximized;
+        }
+        else
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Normal;
+        }
+    }
+
+    private void ExitButton_Click(object sender, RoutedEventArgs e)
+    {
+        Application.Current.Shutdown();
     }
 }
