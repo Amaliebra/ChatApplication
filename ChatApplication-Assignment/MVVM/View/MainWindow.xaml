@@ -23,7 +23,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="170" />
+            <ColumnDefinition Width="200" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Border
@@ -111,7 +111,7 @@
                 Background="Transparent"
                 BorderThickness="0"
                 ItemContainerStyle="{StaticResource ContactStyle}"
-                ItemsSource="{Binding}" />
+                ItemsSource="{Binding Contacts}" />
 
         </Grid>
 

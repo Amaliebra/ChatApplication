@@ -13,12 +13,58 @@ namespace ChatClient.MVVM.ViewModel
         public ObservableCollection<ContactModel> Contacts { get; set; }
         public ObservableCollection<MessageModel> Messages { get; set; }
 
-        public MainViewModel() 
+        public MainViewModel()
         {
             Messages = new ObservableCollection<MessageModel>();
             Contacts = new ObservableCollection<ContactModel>();
+
+            Messages.Add(new MessageModel
+            {
+                Username = "FrenchPost",
+                UsernameColor = "Blue",
+                Message = "Fortnite??? kidding! this is a test",
+                Time = DateTime.Now,
+                IsOwnMessage = false,
+                FirstMessage = true
+            });
+
+            for (int i = 0; i < 3; i++)
+            {
+                Messages.Add(new MessageModel
+                {
+                    Username = "DonaldrrRrr",
+                    ImageSource = "Resources/profile1.png",
+                    UsernameColor = "Red",
+                    Message = "Fortnite??? kidding! this is a test",
+                    Time = DateTime.Now,
+                    IsOwnMessage = false,
+                    FirstMessage = false
+
+                });
+            }
+            Messages.Add(new MessageModel
+            {
+                Username = "AdmiralStoli",
+                ImageSource = "Resources/profile1.png",
+                UsernameColor = "Red",
+                Message = "Fortnite??? kidding! this is a test",
+                Time = DateTime.Now,
+                IsOwnMessage = true,
+                FirstMessage = false
+
+            });
+
+            for (int i = 0; i < 3; i++)
+            {
+                Contacts.Add(new ContactModel
+                {
+                    Username = $"FrenchPost{i}",
+                    ImageSource = "Resources/profile1.png",
+                    Messages = Messages
+                });
+            }
+
         }
 
     }
-
 }

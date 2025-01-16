@@ -2,11 +2,11 @@
     <Style x:Key="ContactStyle" TargetType="ListViewItem">
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="#FFEAEAEA" />
+                <Setter Property="Background" Value="#FFC4FFBF" />
             </Trigger>
         </Style.Triggers>
 
-        <Setter Property="Background" Value="Blue" />
+        <Setter Property="Background" Value="#FFEAEAEA" />
 
         <Setter Property="Template">
             <Setter.Value>
