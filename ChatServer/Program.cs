@@ -1,4 +1,5 @@
 ﻿
+using ChatServer.Net.IO;
 using System.Net;
 using System.Net.Sockets;
 
@@ -28,6 +29,35 @@ public class ChatServerProgram
 
     private async Task HandleClientAsync(TcpClient client)
     {
-        throw new NotImplementedException();
+        using var networkStream = client.GetStream();
+        var packetReader = new PacketReader(networkStream);
+
+        try
+        {
+            while (true)
+            {
+                var opCode = packetReader.ReadOpcode();
+                var message = packetReader.ReadString();
+                Console.WriteLine($"Received message: {message}");
+
+                foreach (var connectedClient in _clients)
+                {
+                    var stream = connectedClient.GetStream();
+                    var packetBuilder = new PacketBuilder();
+                    packetBuilder.WriteOpCode(opCode);
+                    packetBuilder.WriteString(message);
+                    var packetBytes = packetBuilder.GetPacketBytes();
+                    await stream.WriteAsync(packetBytes, 0, packetBytes.Length);
+                }
+            }
+
+        }
+        catch (Exception)
+        {
+            _clients.Remove(client);
+            Console.WriteLine("Client disconnected");
+        }
+
     }
+
 }
