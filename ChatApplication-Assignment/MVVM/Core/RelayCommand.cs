@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatApplication_Assignment.MVVM.Core
+namespace ChatClient.MVVM.Core
 {
     internal class RelayCommand
     {

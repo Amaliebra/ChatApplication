@@ -20,4 +20,18 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
     }
+
+    private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed)
+        {
+            DragMove();
+        }
+
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }
