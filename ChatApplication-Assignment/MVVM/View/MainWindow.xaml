@@ -104,15 +104,42 @@
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Content="Contacts"
-                FontWeight="Medium"
+                FontWeight="SemiBold"
+                FontSize="14"
                 Foreground="#FF2F2E2E" />
             <ListView
                 Grid.Row="1"
                 Background="Transparent"
                 BorderThickness="0"
                 ItemContainerStyle="{StaticResource ContactStyle}"
-                ItemsSource="{Binding Contacts}" />
+                ItemsSource="{Binding Contacts}" SelectionChanged="ListView_SelectionChanged" />
 
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Background="#DBDBDB">
+                <Border CornerRadius="25" Background="#56C54C" Width="30" Height="30" Margin="10,0,0,0"/>
+                <StackPanel VerticalAlignment="Center">
+                    <Label Content="Username"
+                           FontWeight="SemiBold"
+                           FontSize="13"
+                           Foreground="#FF2F2E2E"
+                           Margin="0,-8,0,-5"/>
+                    <Label Content="Status"
+                           FontWeight="SemiBold"
+                           FontSize="10"
+                           Foreground="SlateGray"
+                           Margin="0,-5,0,-5"/>
+                </StackPanel>
+
+            </StackPanel>
+
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition />
+                <RowDefinition Height="70" />
+            </Grid.RowDefinitions>
+            
         </Grid>
 
     </Grid>

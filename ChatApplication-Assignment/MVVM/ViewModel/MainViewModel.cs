@@ -21,7 +21,7 @@ namespace ChatClient.MVVM.ViewModel
             Messages.Add(new MessageModel
             {
                 Username = "FrenchPost",
-                ImageSource = "Resources/profile3.png",
+                ImageSource = "/Resources/profile3.png",
                 UsernameColor = "Blue",
                 Message = "Fortnite??? kidding! this is a test",
                 Time = DateTime.Now,
@@ -34,7 +34,7 @@ namespace ChatClient.MVVM.ViewModel
                 Messages.Add(new MessageModel
                 {
                     Username = "DonaldrrRrr",
-                    ImageSource = "Resources/profile2.png",
+                    ImageSource = "Resources/profile2.jpg",
                     UsernameColor = "Red",
                     Message = "Fortnite??? kidding! this is a test",
                     Time = DateTime.Now,
@@ -46,7 +46,7 @@ namespace ChatClient.MVVM.ViewModel
             Messages.Add(new MessageModel
             {
                 Username = "AdmiralStoli",
-                ImageSource = "Resources/profile1.png",
+                ImageSource = "Resources/profile1.jpg",
                 UsernameColor = "Red",
                 Message = "Fortnite??? kidding! this is a test",
                 Time = DateTime.Now,
@@ -60,7 +60,7 @@ namespace ChatClient.MVVM.ViewModel
                 Contacts.Add(new ContactModel
                 {
                     Username = $"FrenchPost{i}",
-                    ImageSource = "Resources/profile1.png",
+                    ImageSource = "Resources/profile1.jpg",
                     Messages = Messages
                 });
             }

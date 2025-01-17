@@ -19,14 +19,14 @@
 
                         <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
 
-                            <Ellipse>
+                            <Ellipse Height="30" Width="30">
                                 <Ellipse.Fill>
                                     <ImageBrush ImageSource="{Binding ImageSource}" />
                                 </Ellipse.Fill>
                             </Ellipse>
 
                             <StackPanel>
-                                <Label Content="{Binding Username}" Foreground="#FF2F2E2E" />
+                                <Label Content="{Binding Username}" Foreground="#56C54C" FontWeight="SemiBold" />
                                 <Label
                                     Content="{Binding LastMessage}"
                                     FontSize="9"
