@@ -19,11 +19,12 @@
 
                         <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
 
-                            <Border
-                                Width="30"
-                                Height="30"
-                                Background="PaleVioletRed"
-                                CornerRadius="25" />
+                            <Ellipse>
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding ImageSource}" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+
                             <StackPanel>
                                 <Label Content="{Binding Username}" Foreground="#FF2F2E2E" />
                                 <Label

@@ -21,6 +21,7 @@ namespace ChatClient.MVVM.ViewModel
             Messages.Add(new MessageModel
             {
                 Username = "FrenchPost",
+                ImageSource = "Resources/profile3.png",
                 UsernameColor = "Blue",
                 Message = "Fortnite??? kidding! this is a test",
                 Time = DateTime.Now,
@@ -33,7 +34,7 @@ namespace ChatClient.MVVM.ViewModel
                 Messages.Add(new MessageModel
                 {
                     Username = "DonaldrrRrr",
-                    ImageSource = "Resources/profile1.png",
+                    ImageSource = "Resources/profile2.png",
                     UsernameColor = "Red",
                     Message = "Fortnite??? kidding! this is a test",
                     Time = DateTime.Now,
