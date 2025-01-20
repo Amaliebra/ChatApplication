@@ -5,13 +5,16 @@ Some of the functions im "planning" to include:
 - Sounds based on events.
 - Some form of way to handle username.
 - encryption (end to end?).
-- try to use it off local internet.
+- try to use it off local internet. <br>
+
 <br>
 <img src="ChatApplication-Assignment/Resources/First-gui-screenshot.png" width="500"/> <br> 
 Early on in the project, i made this design in xaml. But i soon realized that some of the pieces i used, didnt have the nessecary presets or settings that i needed to link the design with the backend part.<br>
 <img src="ChatApplication-Assignment/Resources/excalidraw-diagram.png" width="500"/> <br>
 I made this diagram before starting the project, to show a rough idea of the function of the app.
+
 ### Resources made by someone else: 
+
 #### Pictures from unsplash
 [`profile1`](https://unsplash.com/photos/a-man-in-a-white-tank-top-and-a-yellow-towel-on-his-head-JhqGVkxR1pA),
 [`profile2`](https://unsplash.com/photos/a-woman-in-a-black-jacket-standing-in-the-dark-JS8diHy9Ntc),
