@@ -171,7 +171,14 @@
                             Width="20"
                             Height="20"
                             Margin="5,0,5,0"
-                            RenderOptions.BitmapScalingMode="Fant" />
+                            RenderOptions.BitmapScalingMode="Fant"
+                            Source="/Resources/icon-video.png" />
+                        <Image
+                            Width="15"
+                            Height="15"
+                            Margin="5,0,5,0"
+                            RenderOptions.BitmapScalingMode="Fant"
+                            Source="/Resources/icon-call.png" />
                     </StackPanel>
 
                 </Grid>
@@ -194,9 +201,19 @@
                     Grid.ColumnSpan="2"
                     Height="50"
                     Style="{StaticResource MessageBox}"
-                    Text="Message @Username" />
-                <StackPanel>
-                    <TextBlock />
+                    Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel
+                    Grid.Column="1"
+                    Margin="0,0,16,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="50"
+                        Height="50"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding SendMessageCommand}"
+                        Content="SEND" />
                 </StackPanel>
             </Grid>
 

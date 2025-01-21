@@ -1,4 +1,6 @@
 ﻿using ChatClient.MVVM.Model;
+using ChatClient.MVVM.Core;
+using ChatClient.Net;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,66 +8,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ChatClient.MVVM.ViewModel
 {
+    //[PropertyChanged]
     class MainViewModel
     {
-        public ObservableCollection<ContactModel> Contacts { get; set; }
-        public ObservableCollection<MessageModel> Messages { get; set; }
+        public ObservableCollection<ContactModel> Contacts { get; private set; } 
+        public ObservableCollection<string> Messages { get; private set; }
+        public RelayCommand SendMessageCommand { get; set; }
+        public RelayCommand ServerConnectCommand { get; set; }
+        public string Username { get; set; }
+        public string Message { get; set; }
+
+        private readonly Server _server = new Server();
+
 
         public MainViewModel()
         {
-            Messages = new ObservableCollection<MessageModel>();
-            Contacts = new ObservableCollection<ContactModel>();
-
-            Messages.Add(new MessageModel
-            {
-                Username = "FrenchPost",
-                ImageSource = "ChatClient/Resources/profile3.png",
-                UsernameColor = "Blue",
-                Message = "Fortnite??? kidding! this is a test",
-                Time = DateTime.Now,
-                IsOwnMessage = false,
-                FirstMessage = true
-            });
-
-            for (int i = 0; i < 3; i++)
-            {
-                Messages.Add(new MessageModel
-                {
-                    Username = "DonaldrrRrr",
-                    ImageSource = "Resources/profile2.jpg",
-                    UsernameColor = "Red",
-                    Message = "Fortnite??? kidding! this is a test",
-                    Time = DateTime.Now,
-                    IsOwnMessage = false,
-                    FirstMessage = false
-
-                });
-            }
-            Messages.Add(new MessageModel
-            {
-                Username = "AdmiralStoli",
-                ImageSource = "Resources/profile1.jpg",
-                UsernameColor = "Red",
-                Message = "Fortnite??? kidding! this is a test",
-                Time = DateTime.Now,
-                IsOwnMessage = true,
-                FirstMessage = false
-
-            });
-
-            for (int i = 0; i < 3; i++)
-            {
-                Contacts.Add(new ContactModel
-                {
-                    Username = $"FrenchPost{i}",
-                    ImageSource = "Resources/profile1.jpg",
-                    Messages = Messages
-                });
-            }
-
+            InitializeCommands();
+            SubscribeToServerEvents();
         }
 
+        private void InitializeCommands()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
