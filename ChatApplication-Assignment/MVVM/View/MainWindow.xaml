@@ -104,59 +104,86 @@
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Content="Contacts"
-                FontWeight="SemiBold"
                 FontSize="14"
+                FontWeight="SemiBold"
                 Foreground="#FF2F2E2E" />
             <ListView
                 Grid.Row="1"
                 Background="Transparent"
                 BorderThickness="0"
                 ItemContainerStyle="{StaticResource ContactStyle}"
-                ItemsSource="{Binding Contacts}" SelectionChanged="ListView_SelectionChanged" />
+                ItemsSource="{Binding Contacts}"
+                SelectionChanged="ListView_SelectionChanged" />
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal" Background="#DBDBDB">
-                <Border CornerRadius="25" Background="#56C54C" Width="30" Height="30" Margin="10,0,0,0"/>
+            <StackPanel
+                Grid.Row="2"
+                Background="#DBDBDB"
+                Orientation="Horizontal">
+                <Border
+                    Width="30"
+                    Height="30"
+                    Margin="10,0,0,0"
+                    Background="#56C54C"
+                    CornerRadius="25" />
                 <StackPanel VerticalAlignment="Center">
-                    <Label Content="Username"
-                           FontWeight="SemiBold"
-                           FontSize="13"
-                           Foreground="#FF2F2E2E"
-                           Margin="0,-8,0,-5"/>
-                    <Label Content="Status"
-                           FontWeight="SemiBold"
-                           FontSize="10"
-                           Foreground="SlateGray"
-                           Margin="0,-5,0,-5"/>
+                    <Label
+                        Margin="0,-8,0,-5"
+                        Content="Username"
+                        FontSize="13"
+                        FontWeight="SemiBold"
+                        Foreground="#FF2F2E2E" />
+                    <Label
+                        Margin="0,-5,0,-5"
+                        Content="Status"
+                        FontSize="10"
+                        FontWeight="SemiBold"
+                        Foreground="SlateGray" />
                 </StackPanel>
 
             </StackPanel>
 
         </Grid>
 
-        <Grid Grid.Column="1" Grid.Row="1">
+        <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
                 <RowDefinition />
                 <RowDefinition Height="70" />
             </Grid.RowDefinitions>
 
-            <Border BorderBrush="#56C54C" BorderThickness="0,0,0,2" Background="#C4FFBF">
-                <Grid HorizontalAlignment="Stretch" Margin="8">
-                    <Label Content="@Username"
-                           Foreground="#FF2F2E2E"
-                           FontWeight="bold"
-                           VerticalAlignment="Center"
-                           Margin="5,0,5,0"/>
+            <Border Background="#C4FFBF">
+                <Border.Effect>
+                    <DropShadowEffect
+                        BlurRadius="5"
+                        Direction="320"
+                        ShadowDepth="1"
+                        Color="#FFD0D0D0" />
+                </Border.Effect>
+                <Grid Margin="8" HorizontalAlignment="Stretch">
+                    <Label
+                        Margin="5,0,5,0"
+                        VerticalAlignment="Center"
+                        Content="@Username"
+                        FontWeight="bold"
+                        Foreground="#FF2F2E2E" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                        <Image Width="20" Height="20" RenderOptions.BitmapScalingMode="Fant" Margin="5,0,5,0
-                               ">
-                            
-                        </Image>
+                        <Image
+                            Width="20"
+                            Height="20"
+                            Margin="5,0,5,0"
+                            RenderOptions.BitmapScalingMode="Fant" />
                     </StackPanel>
 
                 </Grid>
             </Border>
-            
+
+            <ListView
+                Background="Transparent"
+                BorderBrush="0"
+                Grid.Row="1"
+                ItemContainerStyle="{StaticResource}"
+                ItemsSource="{Binding SelectedContact.Messages}" />
+
         </Grid>
 
     </Grid>
