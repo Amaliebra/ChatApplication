@@ -15,8 +15,13 @@ I made this diagram before starting the project, to show a rough idea of the fun
 
 ### Resources made by someone else: 
 
-#### Pictures from unsplash
+#### Pictures from Unsplash
 [`profile1`](https://unsplash.com/photos/a-man-in-a-white-tank-top-and-a-yellow-towel-on-his-head-JhqGVkxR1pA),
 [`profile2`](https://unsplash.com/photos/a-woman-in-a-black-jacket-standing-in-the-dark-JS8diHy9Ntc),
 [`profile3`](https://unsplash.com/photos/a-man-sitting-on-a-chair-playing-a-guitar--ZXIaqsEnJM).
 
+#### Icons from Flaticon
+<div> Icons made by <a href="https://www.flaticon.com/authors/those-icons" title="Those Icons"> Those Icons </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>
+<div> Icons made by <a href="https://www.flaticon.com/authors/tanah-basah" title="Tanah Basah"> Tanah Basah </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>
+<div> Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry"> Kiranshastry </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>
+<div> Icons made by <a href="https://www.flaticon.com/authors/amazona-adorada" title="Amazona Adorada"> Amazona Adorada </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>
