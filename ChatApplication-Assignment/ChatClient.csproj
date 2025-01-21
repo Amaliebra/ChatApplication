@@ -18,9 +18,15 @@
 
   <ItemGroup>
     <Resource Include="MVVM\View\Group 1.png" />
-    <Resource Include="Resources\profile1.jpg" />
-    <Resource Include="Resources\profile2.jpg" />
-    <Resource Include="Resources\profile3.jpg" />
+    <Content Include="Resources\profile1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\profile2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\profile3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

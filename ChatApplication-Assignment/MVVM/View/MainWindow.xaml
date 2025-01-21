@@ -8,7 +8,7 @@
     xmlns:viewmodel="clr-namespace:ChatClient.MVVM.ViewModel"
     Title="MainWindow"
     Width="1000"
-    Height="650"
+    Height="550"
     AllowsTransparency="True"
     Background="#FFEAEAEA"
     ResizeMode="CanResizeWithGrip"
@@ -140,7 +140,7 @@
                 <RowDefinition Height="70" />
             </Grid.RowDefinitions>
 
-            <Border>
+            <Border BorderBrush="#56C54C" BorderThickness="0,0,0,2" Background="#C4FFBF">
                 <Grid HorizontalAlignment="Stretch" Margin="8">
                     <Label Content="@Username"
                            Foreground="#FF2F2E2E"
