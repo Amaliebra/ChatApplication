@@ -178,11 +178,27 @@
             </Border>
 
             <ListView
-                Background="Transparent"
-                BorderBrush="0"
                 Grid.Row="1"
-                ItemContainerStyle="{StaticResource}"
+                Margin="8,0,0,0"
+                Background="Transparent"
+                BorderThickness="0"
+                ItemContainerStyle="{StaticResource ChatStyle}"
                 ItemsSource="{Binding SelectedContact.Messages}" />
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="90" />
+                </Grid.ColumnDefinitions>
+                <TextBox
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    Height="50"
+                    Style="{StaticResource MessageBox}"
+                    Text="Message @Username" />
+                <StackPanel>
+                    <TextBlock />
+                </StackPanel>
+            </Grid>
 
         </Grid>
 

@@ -12,17 +12,48 @@
                                 <ImageBrush ImageSource="{Binding ImageSource}" RenderOptions.BitmapScalingMode="Fant" />
                             </Ellipse.Fill>
                         </Ellipse>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label
+                                    Margin="0,0,-5,0"
+                                    VerticalAlignment="Center"
+                                    Content="{Binding Username}"
+                                    FontWeight="SemiBold"
+                                    Foreground="{Binding UsernameColor}" />
+                                <Label
+                                    VerticalAlignment="Center"
+                                    Content="{Binding Time}"
+                                    FontSize="7"
+                                    FontWeight="SemiBold"
+                                    Foreground="#FF2F2E2E" />
+                            </StackPanel>
                             <Label
-                                Content="{Binding Username}"
+                                VerticalAlignment="Center"
+                                Content="{Binding Message}"
+                                FontSize="7"
                                 FontWeight="SemiBold"
-                                Foreground="{Binding UsernameColor}" />
-
+                                Foreground="#FF2F2E2E" />
                         </StackPanel>
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Resources>
+            <ControlTemplate x:Key="RowStyle">
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        Margin="40,-2,0,-2"
+                        Content="{Binding Message}"
+                        Foreground="#FF2F2E2E" />
+                </StackPanel>
+            </ControlTemplate>
+        </Style.Resources>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding FirstMessage}" Value="False">
+                <Setter Property="Template" Value="{StaticResource RowStyle}" />
+            </DataTrigger>
+        </Style.Triggers>
+
     </Style>
 
 </ResourceDictionary>
