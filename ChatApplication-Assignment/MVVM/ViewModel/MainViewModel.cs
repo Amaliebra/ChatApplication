@@ -64,7 +64,7 @@ namespace ChatClient.MVVM.ViewModel
                 o => !string.IsNullOrWhiteSpace(Message));
         }
 
-        private async Task RemoveUser()
+        private void RemoveUser()
         {
             var uid = _server.PacketReader.ReadString();
             var user = Users.FirstOrDefault(x => x.UID == uid);
@@ -76,11 +76,11 @@ namespace ChatClient.MVVM.ViewModel
             Application.Current.Dispatcher.Invoke(() => Messages.Add(message));
         }
 
-        private void UserConnected()
+        private async Task UserConnected()
         {
             var user = new UserModel
             {
-                Username = _server.PacketReader.ReadStringAsync(),
+                //Username = _server.PacketReader.ReadStringAsync(),
                 UID = _server.PacketReader.ReadString()
             };
 

@@ -13,7 +13,7 @@ namespace ChatClient.Net
         private TcpClient _client;
         public PacketReader PacketReader { get; private set; }
 
-        public event Action ConnectedEvent;
+        public event Func<Task> ConnectedEvent;
         public event Action<string> MessageReceivedEvent;
         public event Action DisconnectedEvent;
 
