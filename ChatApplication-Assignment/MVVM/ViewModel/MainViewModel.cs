@@ -22,11 +22,22 @@ namespace ChatClient.MVVM.ViewModel
         public RelayCommand ServerConnectCommand { get; set; }
         public string Username { get; set; }
 
-        public ContactModel SelectedContact { get; set; }
+        private ContactModel _selectedContact;
 
         private readonly Server _server = new Server();
 
         private string _message;
+
+        public ContactModel SelectedContact
+        {
+            get => _selectedContact;
+            set
+            {
+                _selectedContact = value;
+                SendMessageCommand.RaiseCanExecuteChanged();
+                OnPropertyChanged();
+            }
+        }
         public string Message
         {
             get => _message;
@@ -34,6 +45,7 @@ namespace ChatClient.MVVM.ViewModel
             {
                 _message = value;
                 SendMessageCommand.RaiseCanExecuteChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -66,6 +78,7 @@ namespace ChatClient.MVVM.ViewModel
 
             InitializeCommands();
             SubscribeToServerEvents();
+
         }
 
         private void SubscribeToServerEvents()
@@ -86,13 +99,17 @@ namespace ChatClient.MVVM.ViewModel
             SendMessageCommand = new RelayCommand(
                 async o =>
                 {
+
                     if(!string.IsNullOrEmpty(Message))
                     {
                         await _server.SendMessageAsync(Message);
                         Message = string.Empty;
                     }
+
+
                 },
                 o => !string.IsNullOrWhiteSpace(Message));
+
         }
 
         private void RemoveUser()
@@ -111,8 +128,8 @@ namespace ChatClient.MVVM.ViewModel
         {
             var user = new UserModel
             {
-                Username = _server.PacketReader.ReadStringAsync(),
-                UID = _server.PacketReader.ReadString()
+                Username = await _server.PacketReader.ReadStringAsync(),
+                UID = await _server.PacketReader.ReadStringAsync()
             };
 
             if (!Users.Any(x => x.UID == user.UID))

@@ -37,6 +37,11 @@ namespace ChatClient.Net
 
                 await ReadPacketAsync();
             }
+            catch (SocketException ex)
+            {
+                Console.WriteLine($"Error connecting to server: {ex.SocketErrorCode}");
+                System.Diagnostics.Debug.WriteLine($"Error connecting to server: {ex.SocketErrorCode}");
+            }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error connecting{ex.Message}");
@@ -83,7 +88,16 @@ namespace ChatClient.Net
             var messagePacket = new PacketBuilder();
             messagePacket.WriteOpCode(5);
             messagePacket.WriteString(message);
-            await _client.Client.SendAsync(messagePacket.GetPacketBytes(), SocketFlags.None);
+            try
+            {
+                await _client.Client.SendAsync(messagePacket.GetPacketBytes(), SocketFlags.None);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending message: {ex.Message}");
+                DisconnectedEvent?.Invoke();
+            }
+            
         }
     }
 }

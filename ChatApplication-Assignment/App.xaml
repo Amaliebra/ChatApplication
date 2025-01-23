@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="Style/ContactStyle.xaml" />
                 <ResourceDictionary Source="Style/ChatStyle.xaml" />
                 <ResourceDictionary Source="Style/ChatBox.xaml" />
+                <ResourceDictionary Source="Style/CustomScroll.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

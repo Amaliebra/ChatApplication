@@ -111,6 +111,7 @@
                 Grid.Row="1"
                 Background="Transparent"
                 BorderThickness="0"
+                SelectedItem="{Binding SelectedContact}"
                 ItemContainerStyle="{StaticResource ContactStyle}"
                 ItemsSource="{Binding Contacts}"
                 SelectionChanged="ListView_SelectionChanged" />
