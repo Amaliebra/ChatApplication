@@ -26,6 +26,7 @@ public class Program
         Console.WriteLine("Server started");
         while (true)
         {
+            Console.WriteLine("Waiting for a client...");
             var client = await _server.AcceptTcpClientAsync();
             _clients.Add(client);
             Console.WriteLine("Client connected");
@@ -37,12 +38,15 @@ public class Program
     {
         using var networkStream = client.GetStream();
         var packetReader = new PacketReader(networkStream);
+        Console.WriteLine("Handling client...");
 
         try
         {
             while (true)
             {
+                Console.WriteLine("Waiting for client data...");
                 var opCode = packetReader.ReadOpcode();
+                Console.WriteLine($"Opcode received: {opCode}");
                 var message = packetReader.ReadString();
                 Console.WriteLine($"Received message: {message}");
 
@@ -57,8 +61,9 @@ public class Program
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Console.WriteLine($"Error: {ex.Message}");
             _clients.Remove(client);
             Console.WriteLine("Client disconnected");
         }

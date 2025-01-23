@@ -45,6 +45,7 @@ namespace ChatServer.Net
                         case 5:
                             var message = await _packetReader.ReadStringAsync();
                             Console.WriteLine($"[{DateTime.Now}] {message}");
+
                             MessageReceived?.Invoke(this, message);
                             break;
                         default:

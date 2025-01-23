@@ -17,7 +17,7 @@
                                 VerticalContentAlignment="Center"
                                 Background="Transparent"
                                 BorderThickness="0"
-                                CaretBrush="Green"
+                                CaretBrush="Purple"
                                 Foreground="#FF2F2E2E"
                                 Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <TextBox.InputBindings>
@@ -28,7 +28,7 @@
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                Foreground="Purple"
+                                Foreground="#56C54C"
                                 IsHitTestVisible="False"
                                 Text="Message">
                                 <TextBlock.Style>

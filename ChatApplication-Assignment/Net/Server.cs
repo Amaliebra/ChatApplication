@@ -32,6 +32,7 @@ namespace ChatClient.Net
                     await _client.Client.SendAsync(connectPacket.GetPacketBytes(), SocketFlags.None);
 
                     Console.WriteLine("Connected to server");
+                    System.Diagnostics.Debug.WriteLine("Connected to 127.0.0.1");
                 }
 
                 await ReadPacketAsync();
@@ -39,6 +40,7 @@ namespace ChatClient.Net
             catch (Exception ex)
             {
                 Console.WriteLine($"Error connecting{ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Error connecting to server:{ex.Message}");
                 DisconnectedEvent?.Invoke();
             }
         }
