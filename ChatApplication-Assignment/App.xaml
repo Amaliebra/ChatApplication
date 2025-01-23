@@ -9,6 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Style/ContactStyle.xaml" />
                 <ResourceDictionary Source="Style/ChatStyle.xaml" />
+                <ResourceDictionary Source="Style/ChatBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

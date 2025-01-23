@@ -202,9 +202,6 @@
                     Height="50"
                     Style="{StaticResource ChatBox}"
                     Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.InputBindings>
-                        <KeyBinding />
-                    </TextBox.InputBindings>
                 </TextBox>
                 <StackPanel
                     Grid.Column="1"
