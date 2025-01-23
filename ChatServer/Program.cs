@@ -30,7 +30,7 @@ public class Program
             var client = await _server.AcceptTcpClientAsync();
             _clients.Add(client);
             Console.WriteLine("Client connected");
-            Task.Run(() => HandleClientAsync(client));
+            _ = Task.Run(() => HandleClientAsync(client));
         }
     }
 

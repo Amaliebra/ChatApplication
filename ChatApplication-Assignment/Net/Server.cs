@@ -21,10 +21,11 @@ namespace ChatClient.Net
         {
             try
             {
+                _client = new TcpClient();
                 await _client.ConnectAsync("127.0.0.1", 5000);
                 PacketReader = new PacketReader(_client.GetStream());
 
-                if (!string.IsNullOrEmpty(username))
+                if (!string.IsNullOrEmpty(username)) //----------------------------------------------------------------------Reminder to fix this
                 {
                     var connectPacket = new PacketBuilder();
                     connectPacket.WriteOpCode(0);

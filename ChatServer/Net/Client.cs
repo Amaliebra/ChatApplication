@@ -30,7 +30,7 @@ namespace ChatServer.Net
 
             Console.WriteLine($"{Username} connected!");
 
-            Task.Run(() => ProcessAsync());
+            _ = ProcessAsync();
         }
 
         private async Task ProcessAsync()
@@ -44,7 +44,8 @@ namespace ChatServer.Net
                     {
                         case 5:
                             var message = await _packetReader.ReadStringAsync();
-                            Console.WriteLine($"[{DateTime.Now}] {message}");
+                            Console.WriteLine($"[{DateTime.Now}]" +
+                                $" {message}");
 
                             MessageReceived?.Invoke(this, message);
                             break;
