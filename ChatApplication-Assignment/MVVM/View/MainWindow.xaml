@@ -168,14 +168,14 @@
                         Foreground="#FF2F2E2E" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Image
-                            Width="20"
-                            Height="20"
+                            Width="15"
+                            Height="15"
                             Margin="5,0,5,0"
                             RenderOptions.BitmapScalingMode="Fant"
                             Source="/Resources/icon-video.png" />
                         <Image
-                            Width="15"
-                            Height="15"
+                            Width="12"
+                            Height="12"
                             Margin="5,0,5,0"
                             RenderOptions.BitmapScalingMode="Fant"
                             Source="/Resources/icon-call.png" />
@@ -200,6 +200,7 @@
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
                     Height="50"
+                    Style="{StaticResource ChatBox}"
                     Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.InputBindings>
                         <KeyBinding />
