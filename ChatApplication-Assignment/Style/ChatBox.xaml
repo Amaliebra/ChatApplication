@@ -29,7 +29,6 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Foreground="#56C54C"
-                                IsHitTestVisible="False"
                                 Text="Message">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">

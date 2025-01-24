@@ -111,9 +111,9 @@
                 Grid.Row="1"
                 Background="Transparent"
                 BorderThickness="0"
-                SelectedItem="{Binding SelectedContact}"
                 ItemContainerStyle="{StaticResource ContactStyle}"
                 ItemsSource="{Binding Contacts}"
+                SelectedItem="{Binding SelectedContact}"
                 SelectionChanged="ListView_SelectionChanged" />
 
             <StackPanel
@@ -202,8 +202,7 @@
                     Grid.ColumnSpan="2"
                     Height="50"
                     Style="{StaticResource ChatBox}"
-                    Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}">
-                </TextBox>
+                    Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}" />
                 <StackPanel
                     Grid.Column="1"
                     Margin="0,0,16,0"
@@ -215,7 +214,8 @@
                         Background="Transparent"
                         BorderThickness="0"
                         Command="{Binding SendMessageCommand}"
-                        Content="SEND" />
+                        Content="Send"
+                        FontWeight="SemiBold" />
                 </StackPanel>
             </Grid>
 
