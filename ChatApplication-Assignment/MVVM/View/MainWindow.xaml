@@ -147,7 +147,7 @@
 
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
+                <RowDefinition Height="30" />
                 <RowDefinition />
                 <RowDefinition Height="70" />
             </Grid.RowDefinitions>
@@ -160,9 +160,9 @@
                         ShadowDepth="1"
                         Color="#FFD0D0D0" />
                 </Border.Effect>
-                <Grid Margin="8" HorizontalAlignment="Stretch">
+                <Grid Margin="3" HorizontalAlignment="Stretch">
                     <Label
-                        Margin="5,0,5,0"
+                        Margin="2,0,2,0"
                         VerticalAlignment="Center"
                         Content="@Username"
                         FontWeight="bold"

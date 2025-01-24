@@ -138,14 +138,26 @@ namespace ChatClient.MVVM.ViewModel
             {
                 Contacts.Add(new ContactModel
                 {
-                    Username = $"Allison {i}",
+                    Username = $"Jermie {i}",
                     ImageSource = "/Resources/profile2.png",
                     Messages = Messages
                 });
                 Contacts.Add(new ContactModel
                 {
-                    Username = $"Joe{i}",
+                    Username = $"Joe {i}",
                     ImageSource = "/Resources/profile1.png",
+                    Messages = Messages
+                });
+                Contacts.Add(new ContactModel
+                {
+                    Username = $"Anne {i}",
+                    ImageSource = "/Resources/profile3.png",
+                    Messages = Messages
+                });
+                Contacts.Add(new ContactModel
+                {
+                    Username = $"Lyle {i}",
+                    ImageSource = "/Resources/profile3.png",
                     Messages = Messages
                 });
             }
