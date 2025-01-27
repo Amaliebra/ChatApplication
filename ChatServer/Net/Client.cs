@@ -25,8 +25,6 @@ namespace ChatServer.Net
             UID = Guid.NewGuid();
             _packetReader = new PacketReader(ClientSocket.GetStream());
 
-            Console.WriteLine($"{Username} connected!");
-
             _ = ProcessAsync();
             _ = InitializeAsync();
         }

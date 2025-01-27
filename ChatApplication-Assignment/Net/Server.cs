@@ -36,7 +36,7 @@ namespace ChatClient.Net
                     System.Diagnostics.Debug.WriteLine("Connected to 127.0.0.1");
                 }
 
-                await ReadPacketAsync();
+                _ = ReadPacketAsync();
             }
             catch (SocketException ex)
             {
@@ -61,7 +61,8 @@ namespace ChatClient.Net
                     switch (opcode)
                     {
                         case 1:
-                            ConnectedEvent?.Invoke();
+                            if (ConnectedEvent != null)
+                                await ConnectedEvent.Invoke();
                             break;
                         case 5:
                             var message = await PacketReader.ReadStringAsync();
@@ -70,7 +71,7 @@ namespace ChatClient.Net
                             break;
                         case 10:
                             DisconnectedEvent?.Invoke();
-                            break;
+                            return;
                         default:
                             Console.WriteLine($"Unknown opcode: {opcode}");
                             break;
@@ -87,6 +88,11 @@ namespace ChatClient.Net
 
         public async Task SendMessageAsync(string message)
         {
+            if(!_client.Connected)
+            {
+                Console.WriteLine("Not connected to server");
+                return;
+            }
             var messagePacket = new PacketBuilder();
             messagePacket.WriteOpCode(5);
             messagePacket.WriteString(message);

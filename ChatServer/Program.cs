@@ -1,5 +1,6 @@
 ﻿
 using ChatServer.Net.IO;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 
@@ -45,9 +46,9 @@ public class Program
             while (true)
             {
                 Console.WriteLine("Waiting for client data...");
-                var opCode = packetReader.ReadOpcode();
+                var opCode = await packetReader.ReadOpcodeAsync();
                 Console.WriteLine($"Opcode received: {opCode}");
-                var message = packetReader.ReadString();
+                var message = await packetReader.ReadStringAsync();
                 Console.WriteLine($"Received message: {message}");
 
                 foreach (var connectedClient in _clients)
@@ -66,6 +67,7 @@ public class Program
             Console.WriteLine($"Error: {ex.Message}");
             _clients.Remove(client);
             Console.WriteLine("Client disconnected");
+            client.Close();
         }
     }
 }
