@@ -65,6 +65,7 @@ namespace ChatClient.Net
                             break;
                         case 5:
                             var message = await PacketReader.ReadStringAsync();
+                            Console.WriteLine($"[{DateTime.Now}] {message}");
                             MessageReceivedEvent?.Invoke(message);
                             break;
                         case 10:

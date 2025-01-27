@@ -25,12 +25,26 @@ namespace ChatServer.Net
             UID = Guid.NewGuid();
             _packetReader = new PacketReader(ClientSocket.GetStream());
 
-            var opcode = _packetReader.ReadOpcode();
-            Username = _packetReader.ReadString();
-
             Console.WriteLine($"{Username} connected!");
 
             _ = ProcessAsync();
+            _ = InitializeAsync();
+        }
+
+        private async Task InitializeAsync()
+        {
+            try
+            {
+                var opcode = await _packetReader.ReadOpcodeAsync();
+                Username = await _packetReader.ReadStringAsync();
+                Console.WriteLine($"{Username} connected!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to initialize client: {ex.Message}");
+                Disconnected?.Invoke(this);
+                ClientSocket.Dispose();
+            }
         }
 
         private async Task ProcessAsync()
@@ -58,8 +72,11 @@ namespace ChatServer.Net
             catch (Exception ex)
             {
                 Console.WriteLine($"{UID}{Username} Disconnected {ex.Message}");
+            }
+            finally
+            {
                 Disconnected?.Invoke(this);
-                ClientSocket.Close();
+                ClientSocket.Dispose();
             }
         }
     }
