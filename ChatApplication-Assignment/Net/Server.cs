@@ -25,6 +25,7 @@ namespace ChatClient.Net
                 await _client.ConnectAsync("127.0.0.1", 5000);
                 PacketReader = new PacketReader(_client.GetStream());
 
+                Console.WriteLine($"Transmitting username: {username}");
                 if (!string.IsNullOrEmpty(username)) //----------------------------------------------------------------------Reminder to fix this
                 {
                     var connectPacket = new PacketBuilder();
@@ -88,17 +89,28 @@ namespace ChatClient.Net
 
         public async Task SendMessageAsync(string message)
         {
-            if(!_client.Connected)
+            if (string.IsNullOrWhiteSpace(message))
             {
-                Console.WriteLine("Not connected to server");
                 return;
             }
+            if (_client == null || !_client.Connected)
+            {
+                Console.WriteLine("Not connected to server");
+                DisconnectedEvent?.Invoke();
+                return;
+            }
+
             var messagePacket = new PacketBuilder();
             messagePacket.WriteOpCode(5);
             messagePacket.WriteString(message);
+
             try
             {
                 await _client.Client.SendAsync(messagePacket.GetPacketBytes(), SocketFlags.None);
+            }
+            catch(SocketException ex)
+            {
+                Console.WriteLine(ex.SocketErrorCode);
             }
             catch (Exception ex)
             {

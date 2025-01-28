@@ -180,6 +180,7 @@ namespace ChatClient.MVVM.ViewModel
 
         private void InitializeCommands()
         {
+
             ServerConnectCommand = new RelayCommand(
                 async o => await _server.ConnectToServerAsync(Username),
                 o => true);

@@ -43,6 +43,7 @@ public class Program
 
         try
         {
+            Console.WriteLine($"Client connected: {client.Client.RemoteEndPoint}");
             while (true)
             {
                 Console.WriteLine("Waiting for client data...");
