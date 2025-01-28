@@ -3,12 +3,16 @@ This is a assignment project. I decided to make a chatapp with a client and a se
 A few months ago, i made a similar app. So i wanted to expand on my knowledge and add better functions to this version.
 Some of the functions im "planning" to include:
 - Sounds based on events.
-- Some form of way to handle username.
-- encryption (end to end?).
-- try to use it off local internet. <br>
+- Some form of way to handle username. Either given at random(placeholder) or type in whatever(Also placeholder with no saving)
+- encryption (end to end? Api possibly).
+- try to use it off local internet.(probably not going to happen within the deadline) <br>
+
+### Challanges with the project
+- I wanted to use async. I had heard async would work better with multiple clients. And it was a real challenge going from what i used in my previous project to change everything just to try to get the async to work.
+- 
 
 <br>
-<img src="ChatApplication-Assignment/Resources/First-gui-screenshot.png" width="500"/> <br> 
+<img src="ChatApplication-Assignment/Resources/First-gui-screenshot.png" width="500"/>
 Early on in the project, i made this design in xaml. But i soon realized that some of the pieces i used, didnt have the nessecary presets or settings that i needed to link the design with the backend part.<br>
 <img src="ChatApplication-Assignment/Resources/excalidraw-diagram.png" width="500"/> <br>
 I made this diagram before starting the project, to show a rough idea of the function of the app.
