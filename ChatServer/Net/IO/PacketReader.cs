@@ -14,17 +14,17 @@ namespace ChatServer.Net.IO
             _stream = stream;
         }
 
-        public byte ReadOpcode()
-        {
-            return ReadByte();
-        }
+        //public byte ReadOpcode()
+        //{
+        //    return ReadByte();
+        //}
 
-        public string ReadString()
-        {
-            var length = ReadUInt16();
-            var message = new string(ReadChars(length));
-            return message;
-        }
+        //public string ReadString()
+        //{
+        //    var length = ReadUInt16();
+        //    var message = new string(ReadChars(length));
+        //    return message;
+        //}
 
         public async Task<byte> ReadOpcodeAsync()
         {

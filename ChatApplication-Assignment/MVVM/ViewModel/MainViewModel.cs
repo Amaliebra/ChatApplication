@@ -139,25 +139,25 @@ namespace ChatClient.MVVM.ViewModel
                 Contacts.Add(new ContactModel
                 {
                     Username = $"Jermie {i}",
-                    ImageSource = "/Resources/profile2.png",
+                    ImageSource = "./Resources/profile2.jpg",
                     Messages = Messages
                 });
                 Contacts.Add(new ContactModel
                 {
                     Username = $"Joe {i}",
-                    ImageSource = "/Resources/profile1.png",
+                    ImageSource = "Resources/profile1.jpg",
                     Messages = Messages
                 });
                 Contacts.Add(new ContactModel
                 {
                     Username = $"Anne {i}",
-                    ImageSource = "/Resources/profile3.png",
+                    ImageSource = "Resources/profile3.jpg",
                     Messages = Messages
                 });
                 Contacts.Add(new ContactModel
                 {
                     Username = $"Lyle {i}",
-                    ImageSource = "/Resources/profile3.png",
+                    ImageSource = "Resources/profile3.jpg",
                     Messages = Messages
                 });
             }
@@ -203,9 +203,9 @@ namespace ChatClient.MVVM.ViewModel
 
         }
 
-        private void RemoveUser()
+        private async void RemoveUser()
         {
-            var uid = _server.PacketReader.ReadString();
+            var uid = await _server.PacketReader.ReadStringAsync();
             var user = Users.FirstOrDefault(x => x.UID == uid);
             Application.Current.Dispatcher.Invoke(() => Users.Remove(user));
         }
