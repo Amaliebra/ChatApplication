@@ -1,15 +1,16 @@
 # CHAT APP & SERVER
 This is a assignment project. I decided to make a chatapp with a client and a server. The gui is made in wpf.
 A few months ago, i made a similar app. So i wanted to expand on my knowledge and add better functions to this version.
-Some of the functions im "planning" to include:
+Here are some of the functions im "planning" to include, depending on how smooth the process will be:
 - Sounds based on events.
-- Some form of way to handle username. Either given at random(placeholder) or type in whatever(Also placeholder with no saving)
-- encryption (end to end? Api possibly).
+- Additional view (Maybe a small window of some sort. Hopefully)
+- Some form of way to handle username. Either given at random(placeholder) or type in username, with no requirements(Also placeholder with no saving)
+- encryption (end to end? Api possibly. Probably wont focus on this).
 - try to use it off local internet.(probably not going to happen within the deadline) <br>
 
 ### Challanges with the project
-- I wanted to use async. I had heard async would work better with multiple clients. And it was a real challenge going from what i used in my previous project to change everything just to try to get the async to work.
-- 
+- I wanted to use async. I had heard async would work better with multiple clients. And it was a real challenge going from what i used in my previous project. Changing everything just to try to get the async to work.
+- I had difficulties finding the source of the issues i had, as it was hard debugging.
 
 <br>
 <img src="ChatApplication-Assignment/Resources/First-gui-screenshot.png" width="500"/>
