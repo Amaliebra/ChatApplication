@@ -43,7 +43,14 @@ namespace ChatClient.MVVM.ViewModel
         {
             System.Diagnostics.Debug.WriteLine($"Attempting login as {Username}");
 
+            if (Application.Current.Windows.OfType<MainWindow>().Any())
+            {
+                System.Diagnostics.Debug.WriteLine("MainView open, skipping instance");
+                return;
+            }
+
             var mainViewModel = new MainViewModel { Username = this.Username };
+
             var mainWindow = new MainWindow { DataContext = new MainViewModel() };
 
             mainViewModel.InitializeConnection();
