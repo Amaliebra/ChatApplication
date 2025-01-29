@@ -19,8 +19,8 @@ namespace ChatClient.Net
 
         public async Task ConnectToServerAsync(string username, int maxRetries = 5, int delayRetries = 2000)
         {
-            int attempt = 0;
             System.Diagnostics.Debug.WriteLine("Starting connection attempts...");
+            int attempt = 0;
 
             while (attempt < maxRetries)
             {

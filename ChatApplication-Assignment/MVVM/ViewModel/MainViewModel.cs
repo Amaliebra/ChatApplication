@@ -169,6 +169,8 @@ namespace ChatClient.MVVM.ViewModel
             InitializeCommands();
             SubscribeToServerEvents();
 
+            Task.Run(async () => await _server.ConnectToServerAsync(Username));
+
         }
 
         private void SubscribeToServerEvents()
