@@ -129,7 +129,7 @@
                 <StackPanel VerticalAlignment="Center">
                     <Label
                         Margin="0,-8,0,-5"
-                        Content="Username"
+                        Content="{Binding Username}"
                         FontSize="13"
                         FontWeight="SemiBold"
                         Foreground="#FF2F2E2E" />

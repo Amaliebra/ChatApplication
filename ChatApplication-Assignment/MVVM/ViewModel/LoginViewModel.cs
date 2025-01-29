@@ -30,6 +30,8 @@ namespace ChatClient.MVVM.ViewModel
 
         public LoginViewModel()
         {
+            System.Diagnostics.Debug.WriteLine("LoginViewModel called");
+
             var random = new Random();
             Username = _usernames[random.Next(_usernames.Count)];
             System.Diagnostics.Debug.WriteLine($"default username: {Username}");
@@ -41,12 +43,10 @@ namespace ChatClient.MVVM.ViewModel
         {
             System.Diagnostics.Debug.WriteLine($"Attempting login as {Username}");
 
+            var mainViewModel = new MainViewModel { Username = this.Username };
             var mainWindow = new MainWindow { DataContext = new MainViewModel() };
-            if (mainWindow.DataContext is MainViewModel mainViewModel)
-            {
-                mainViewModel.Username = this.Username;
-                mainViewModel.InitializeConnection();
-            }
+
+            mainViewModel.InitializeConnection();
 
             Application.Current.Dispatcher.Invoke(() =>
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatClient.MVVM.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,17 @@ namespace ChatClient.MVVM.View
         public LoginView()
         {
             InitializeComponent();
+            this.DataContext = new LoginViewModel();
+            System.Diagnostics.Debug.WriteLine("LoginView loaded");
+        }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)

@@ -10,6 +10,7 @@
     Height="250"
     AllowsTransparency="True"
     Background="#FFEAEAEA"
+    ResizeMode="CanResizeWithGrip"
     WindowStyle="None"
     mc:Ignorable="d">
     <Grid>
@@ -26,7 +27,8 @@
                 Grid.ColumnSpan="1"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Top"
-                Background="White">
+                Background="White"
+                MouseDown="Border_MouseDown">
                 <Grid HorizontalAlignment="Stretch">
                     <Image
                         Width="20"
@@ -95,7 +97,10 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
             <Label>Username:</Label>
-            <TextBox x:Name="txtUsername" BorderBrush="Transparent" />
+            <TextBox
+                x:Name="txtUsername"
+                BorderBrush="Transparent"
+                Text="{Binding Username, Mode=TwoWay}" />
             <Label>Password:</Label>
             <PasswordBox x:Name="txtPassword" BorderBrush="Transparent" />
             <Button

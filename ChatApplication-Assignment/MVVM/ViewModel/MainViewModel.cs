@@ -47,6 +47,8 @@ namespace ChatClient.MVVM.ViewModel
 
         public MainViewModel()
         {
+            System.Diagnostics.Debug.WriteLine("MainViewModel called");
+
             Users = new ObservableCollection<UserModel>();
             //Messages = new ObservableCollection<string>();
             Contacts = new ObservableCollection<ContactModel>();
@@ -146,7 +148,13 @@ namespace ChatClient.MVVM.ViewModel
 
         public void InitializeConnection()
         {
-            Task.Run(async () => await _server.ConnectToServerAsync(Username));
+            System.Diagnostics.Debug.WriteLine($"Initializing connection for {Username}...");
+            Task.Run(async () =>
+            {
+                System.Diagnostics.Debug.WriteLine($"Attempting to connect as {Username}");
+                await _server.ConnectToServerAsync(Username);
+                System.Diagnostics.Debug.WriteLine($"Connection request sent for {Username}");
+            });
         }
 
         private void SubscribeToServerEvents()
