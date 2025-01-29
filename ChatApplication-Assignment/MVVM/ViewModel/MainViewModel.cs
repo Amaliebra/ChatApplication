@@ -1,15 +1,8 @@
 ﻿using ChatClient.MVVM.Model;
 using ChatClient.MVVM.Core;
 using ChatClient.Net;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.ComponentModel.Design;
-
 
 namespace ChatClient.MVVM.ViewModel
 {
@@ -51,23 +44,6 @@ namespace ChatClient.MVVM.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        private readonly List<string> _usernames = new()
-        {
-            "xXGamer360NoScopeXx",
-            "CoolCat123",
-            "N00b_Destroyer_1337",
-            "I_H4t3_L1f3_xD",
-            "xX_Slay3r_Xx",
-            "SkullzOnF1r3",
-            "Xx_D3thStalker_xX",
-            "Pwnz0r",
-            "xXx_1337_xXx",
-            "R4venBl8de",
-            "D3athM4ch1n3",
-            "AKSprayL0rd",
-            "Pray_N_Spray",
-        };
 
         public MainViewModel()
         {
@@ -162,15 +138,15 @@ namespace ChatClient.MVVM.ViewModel
                 });
             }
 
-            var random = new Random();
-            Username = _usernames[random.Next(0, _usernames.Count)];
-            System.Diagnostics.Debug.WriteLine($"Hi {Username}, how is your day going?");
 
             InitializeCommands();
             SubscribeToServerEvents();
 
-            Task.Run(async () => await _server.ConnectToServerAsync(Username));
+        }
 
+        public void InitializeConnection()
+        {
+            Task.Run(async () => await _server.ConnectToServerAsync(Username));
         }
 
         private void SubscribeToServerEvents()
