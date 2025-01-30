@@ -93,16 +93,30 @@
         </Grid>
         <StackPanel
             Grid.Row="1"
-            Width="150"
+            Width="200"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
-            <Label>Username:</Label>
+            <Label
+                FontSize="8"
+                FontWeight="Heavy"
+                Foreground="#FF2F2E2E">
+                Username:
+            </Label>
             <TextBox
                 x:Name="txtUsername"
                 BorderBrush="Transparent"
+                Foreground="#FF2F2E2E"
                 Text="{Binding Username, Mode=TwoWay}" />
-            <Label>Password:</Label>
-            <PasswordBox x:Name="txtPassword" BorderBrush="Transparent" />
+            <Label
+                FontSize="8"
+                FontWeight="Heavy"
+                Foreground="#FF2F2E2E">
+                Password:
+            </Label>
+            <PasswordBox
+                x:Name="txtPassword"
+                BorderBrush="Transparent"
+                Foreground="#FF2F2E2E" />
             <Button
                 x:Name="btnLogin"
                 Margin="0,10,0,0"
@@ -110,7 +124,10 @@
                 BorderBrush="Transparent"
                 Click="btnLogin_Click"
                 Command="{Binding LoginCommand}"
-                Content="Login" />
+                Content="Log In"
+                FontSize="10"
+                FontWeight="SemiBold"
+                Foreground="#FF2F2E2E" />
             <TextBlock
                 x:Name="lblErrorMessage"
                 Margin="0,5,0,0"
