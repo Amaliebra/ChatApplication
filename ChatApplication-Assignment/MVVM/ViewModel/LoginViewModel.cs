@@ -51,7 +51,7 @@ namespace ChatClient.MVVM.ViewModel
 
             var mainViewModel = new MainViewModel { Username = this.Username };
 
-            var mainWindow = new MainWindow { DataContext = new MainViewModel() };
+            var mainWindow = new MainWindow { DataContext = mainViewModel };
 
             mainViewModel.InitializeConnection();
 
