@@ -40,10 +40,10 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     RenderTransformOrigin="-2.087,0.958"
-                    Source="/resources/logo.png">
+                    Source="\Resources\logo.png">
                     <Image.OpacityMask>
                         <ImageBrush
-                            ImageSource="/resources/logo.png"
+                            ImageSource="\Resources\logo.png"
                             Stretch="Fill"
                             TileMode="None" />
                     </Image.OpacityMask>

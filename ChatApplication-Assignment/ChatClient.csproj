@@ -13,6 +13,7 @@
     <None Remove="Resources\icon-call.png" />
     <None Remove="Resources\icon-send.png" />
     <None Remove="Resources\icon-video.png" />
+    <None Remove="Resources\logo.png" />
     <None Remove="Resources\profile1.jpg" />
     <None Remove="Resources\profile2.jpg" />
     <None Remove="Resources\profile3.jpg" />
@@ -35,6 +36,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\profile3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

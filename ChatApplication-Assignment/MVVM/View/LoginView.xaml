@@ -6,8 +6,8 @@
     xmlns:local="clr-namespace:ChatClient.MVVM.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="LoginView"
-    Width="400"
-    Height="250"
+    Width="600"
+    Height="400"
     AllowsTransparency="True"
     Background="#FFEAEAEA"
     ResizeMode="CanResizeWithGrip"
@@ -37,10 +37,10 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         RenderTransformOrigin="-2.087,0.958"
-                        Source="/resources/logo.png">
+                        Source="\Resources\logo.png">
                         <Image.OpacityMask>
                             <ImageBrush
-                                ImageSource="/resources/logo.png"
+                                ImageSource="\Resources\logo.png"
                                 Stretch="Fill"
                                 TileMode="None" />
                         </Image.OpacityMask>
@@ -119,12 +119,13 @@
                     x:Name="txtPassword"
                     BorderBrush="Transparent"
                     Foreground="#FF2F2E2E" />
+                <Label Content="Reset password" FontSize="9" />
                 <Button
-                    x:Name="btnLogin"
+                    x:Name="BtnLogin"
                     Margin="0,10,0,0"
                     Background="#56C54C"
                     BorderBrush="Transparent"
-                    Click="btnLogin_Click"
+                    Click="BtnLogin_Click"
                     Command="{Binding LoginCommand}"
                     Content="Log In"
                     FontSize="10"
@@ -135,6 +136,7 @@
                     Margin="0,5,0,0"
                     Foreground="Red"
                     Visibility="Collapsed" />
+                <Label Content="Need an account?" FontSize="9" />
             </StackPanel>
         </Border>
     </Grid>
