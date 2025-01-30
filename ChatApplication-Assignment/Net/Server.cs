@@ -57,7 +57,7 @@ namespace ChatClient.Net
                     {
                         Console.WriteLine("All connection attempts failed.");
                         DisconnectedEvent?.Invoke();
-                        break;
+                        return;
                     }
                 }
                 catch (Exception ex)

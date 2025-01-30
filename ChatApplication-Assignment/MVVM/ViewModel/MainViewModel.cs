@@ -24,6 +24,8 @@ namespace ChatClient.MVVM.ViewModel
 
         private string _message;
 
+        private bool _isConnected = false;
+
         public ContactModel SelectedContact
         {
             get { return _selectedContact; }
@@ -150,6 +152,14 @@ namespace ChatClient.MVVM.ViewModel
 
         public void InitializeConnection()
         {
+            if (_isConnected)
+            {
+                System.Diagnostics.Debug.WriteLine("Already connected. Skipping duplicate connection.");
+                return;
+            }
+
+            _isConnected = true;
+
             System.Diagnostics.Debug.WriteLine($"Initializing connection for {Username}...");
             Task.Run(async () =>
             {

@@ -65,8 +65,11 @@ public class Program
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
-            _clients.Remove(client);
-            Console.WriteLine("Client disconnected");
+        }
+        finally
+        {
+            Console.WriteLine("Removing client from server");
+            _clients.RemoveAll(c => c == client);
             client.Close();
         }
     }
