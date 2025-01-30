@@ -40,10 +40,10 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     RenderTransformOrigin="-2.087,0.958"
-                    Source="/MVVM/View/Group 1.png">
+                    Source="/resources/logo.png">
                     <Image.OpacityMask>
                         <ImageBrush
-                            ImageSource="/MVVM/View/Group 1.png"
+                            ImageSource="/resources/logo.png"
                             Stretch="Fill"
                             TileMode="None" />
                     </Image.OpacityMask>

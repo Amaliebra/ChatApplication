@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="MVVM\View\Group 1.png" />
     <None Remove="Resources\icon-call.png" />
     <None Remove="Resources\icon-send.png" />
     <None Remove="Resources\icon-video.png" />
@@ -20,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="MVVM\View\Group 1.png" />
     <Content Include="Resources\icon-call.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
