@@ -20,8 +20,8 @@ namespace ChatServer.Net
             UID = Guid.NewGuid();
             _packetReader = new PacketReader(ClientSocket.GetStream());
 
-            _ = ProcessAsync();
             _ = InitializeAsync();
+            _ = ProcessAsync();
         }
 
         private async Task InitializeAsync()
@@ -46,28 +46,37 @@ namespace ChatServer.Net
             {
                 while (true)
                 {
-                    var opcode = await _packetReader.ReadOpcodeAsync();
-                    switch (opcode)
+                    try
                     {
-                        case 5:
-                            var message = await _packetReader.ReadStringAsync();
-                            Console.WriteLine($"[{DateTime.Now}]" +
-                                $" {message}");
+                        var opcode = await _packetReader.ReadOpcodeAsync();
+                        switch (opcode)
+                        {
+                            case 5:
+                                var message = await _packetReader.ReadStringAsync();
+                                Console.WriteLine($"[{DateTime.Now}] {Username}: {message}");
 
-                            MessageReceived?.Invoke(this, message);
-                            break;
-                        default:
-                            Console.WriteLine($"Unknown opcode: {opcode}");
-                            break;
+                                MessageReceived?.Invoke(this, message);
+                                break;
+                            default:
+                                Console.WriteLine($"Unknown opcode: {opcode}");
+                                break;
+                        }
+                    }
+                    catch (IOException)
+                    {
+                        Console.WriteLine($"⚠️ {Username} disconnected unexpectedly.");
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"❌ Error processing client {Username}: {ex.Message}");
+                        break;
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"{UID}{Username} Disconnected {ex.Message}");
-            }
             finally
             {
+                Console.WriteLine($"🚪 Removing {Username} from the server.");
                 Disconnected?.Invoke(this);
                 ClientSocket.Dispose();
             }

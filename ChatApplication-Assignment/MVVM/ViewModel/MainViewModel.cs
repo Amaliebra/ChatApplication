@@ -143,6 +143,8 @@ namespace ChatClient.MVVM.ViewModel
 
             InitializeCommands();
             SubscribeToServerEvents();
+            System.Diagnostics.Debug.WriteLine("Starting connection");
+            InitializeConnection();
 
         }
 

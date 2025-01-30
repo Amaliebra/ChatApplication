@@ -25,6 +25,8 @@ namespace ChatClient.Net
                     await _client.ConnectAsync("127.0.0.1", 5000);
                     PacketReader = new PacketReader(_client.GetStream());
 
+                    await Task.Delay(200);
+
                     Console.WriteLine($"Transmitting username: {username}");
                     if (!string.IsNullOrEmpty(username))
                     {
