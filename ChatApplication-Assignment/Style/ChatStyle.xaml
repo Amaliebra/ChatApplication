@@ -19,10 +19,10 @@
                                     VerticalAlignment="Center"
                                     Content="{Binding Username}"
                                     FontWeight="SemiBold"
-                                    Foreground="{Binding UsernameColor}" />
+                                    Foreground="{Binding UsernameColor, FallbackValue=Unknown}" />
                                 <Label
                                     VerticalAlignment="Center"
-                                    Content="{Binding Time}"
+                                    Content="{Binding Time, StringFormat='hh:mm tt', FallbackValue='No Time'}"
                                     FontSize="7"
                                     FontWeight="SemiBold"
                                     Foreground="#FF2F2E2E" />

@@ -163,16 +163,18 @@ namespace ChatClient.MVVM.ViewModel
                 {
                     if (!string.IsNullOrWhiteSpace(Message) && SelectedContact != null)
                     {
-                        SelectedContact.Messages.Add(new MessageModel
+                        var newMessage = new MessageModel
                         {
-                            Username = Username,
+                            Username = Username, 
                             Message = Message,
                             Time = DateTime.Now,
                             IsOwnMessage = true
-                        });
+                        };
 
+                        System.Diagnostics.Debug.WriteLine($"Sending Message: {newMessage.Username} at {newMessage.Time} - {newMessage.Message}");
+
+                        SelectedContact.Messages.Add(newMessage);
                         await _server.SendMessageAsync(Message);
-
                         Message = string.Empty;
                     }
                 },
