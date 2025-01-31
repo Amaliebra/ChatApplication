@@ -1,5 +1,6 @@
 ﻿using ChatClient.MVVM.Core;
 using System.Windows;
+using ChatClient.MVVM.ViewModel;
 using ChatClient.MVVM.View;
 
 
@@ -36,7 +37,15 @@ namespace ChatClient.MVVM.ViewModel
             Username = _usernames[random.Next(_usernames.Count)];
             System.Diagnostics.Debug.WriteLine($"default username: {Username}");
 
-            LoginCommand = new RelayCommand(o => Login());
+            LoginCommand = new RelayCommand(o =>
+            {
+                var mainView = new MainWindow
+                {
+                    DataContext = new MainViewModel(Username)
+                };
+                mainView.Show();
+                Application.Current.MainWindow.Close();
+            });
 
         }
         private void Login()

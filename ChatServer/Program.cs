@@ -24,25 +24,38 @@ public class Program
     {
         _server.Start();
         Console.WriteLine("Server started");
+
         while (true)
         {
             Console.WriteLine("Waiting for a client...");
             var client = await _server.AcceptTcpClientAsync();
+
+            // Prevent duplicate clients (check if they are already connected)
+            if (_clients.Any(c => ((IPEndPoint)c.Client.RemoteEndPoint).Address.Equals(((IPEndPoint)client.Client.RemoteEndPoint).Address)))
+            {
+                Console.WriteLine("Duplicate client detected, rejecting connection.");
+                client.Close();
+                continue;
+            }
+
             _clients.Add(client);
-            Console.WriteLine("Client connected");
+            Console.WriteLine($"Client connected: {((IPEndPoint)client.Client.RemoteEndPoint).Address}");
+
             _ = Task.Run(() => HandleClientAsync(client));
         }
     }
 
     private async Task HandleClientAsync(TcpClient client)
     {
-        using var networkStream = client.GetStream();
-        var packetReader = new PacketReader(networkStream);
-        Console.WriteLine("Handling client...");
-
         try
         {
+            using var networkStream = client.GetStream();
+            var packetReader = new PacketReader(networkStream);
+            Console.WriteLine("Handling client...");
+
             Console.WriteLine($"Client connected: {client.Client.RemoteEndPoint}");
+
+            _clients.Add(client);
             while (true)
             {
                 Console.WriteLine("Waiting for client data...");

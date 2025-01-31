@@ -47,7 +47,7 @@ namespace ChatClient.MVVM.ViewModel
             }
         }
 
-        public MainViewModel()
+        public MainViewModel(string Username)
         {
             System.Diagnostics.Debug.WriteLine("MainViewModel called");
 

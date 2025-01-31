@@ -21,6 +21,12 @@ namespace ChatClient.Net
             {
                 try
                 {
+                    if (_client != null && _client.Connected)
+                    {
+                        Console.WriteLine("Already connected to the server.");
+                        return; // Prevent duplicate connection attempts
+                    }
+
                     _client = new TcpClient();
                     await _client.ConnectAsync("127.0.0.1", 5000);
                     PacketReader = new PacketReader(_client.GetStream());
@@ -28,44 +34,18 @@ namespace ChatClient.Net
                     await Task.Delay(200);
 
                     Console.WriteLine($"Transmitting username: {username}");
-                    if (!string.IsNullOrEmpty(username))
-                    {
-                        var connectPacket = new PacketBuilder();
-                        connectPacket.WriteOpCode(0);
-                        connectPacket.WriteString(username);
-                        await _client.Client.SendAsync(connectPacket.GetPacketBytes(), SocketFlags.None);
+                    var packetBuilder = new PacketBuilder();
+                    packetBuilder.WriteOpCode(0);
+                    packetBuilder.WriteString(username);
+                    await _client.GetStream().WriteAsync(packetBuilder.GetPacketBytes());
 
-                        Console.WriteLine("Connected to server");
-                        System.Diagnostics.Debug.WriteLine("Connected to 127.0.0.1");
-
-                        _ = ReadPacketAsync();
-                        return;
-                    }
-                }
-                catch (SocketException ex)
-                {
-                    attempt++;
-                    Console.WriteLine($"Attempt {attempt}/{maxRetries} failed: {ex.SocketErrorCode}");
-                    System.Diagnostics.Debug.WriteLine($"Attempt {attempt}/{maxRetries} failed: {ex.SocketErrorCode}");
-
-                    if (attempt < maxRetries)
-                    {
-                        Console.WriteLine($"Retrying in {delayRetries}ms...");
-                        await Task.Delay(delayRetries);
-                    }
-                    else
-                    {
-                        Console.WriteLine("All connection attempts failed.");
-                        DisconnectedEvent?.Invoke();
-                        return;
-                    }
+                    break;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error connecting: {ex.Message}");
-                    System.Diagnostics.Debug.WriteLine($"Error connecting: {ex.Message}");
-                    DisconnectedEvent?.Invoke();
-                    break;
+                    attempt++;
+                    Console.WriteLine($"Connection attempt {attempt} failed: {ex.Message}");
+                    await Task.Delay(delayRetries);
                 }
             }
         }
