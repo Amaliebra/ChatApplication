@@ -32,7 +32,6 @@ namespace ChatClient.MVVM.ViewModel
             set
             {
                 _selectedContact = value;
-                //SendMessageCommand.RaiseCanExecuteChanged();
                 OnPropertyChanged();
             }
         }
@@ -42,7 +41,6 @@ namespace ChatClient.MVVM.ViewModel
             set
             {
                 _message = value;
-                //SendMessageCommand.RaiseCanExecuteChanged();
                 OnPropertyChanged();
             }
         }
@@ -60,9 +58,16 @@ namespace ChatClient.MVVM.ViewModel
             SendMessageCommand = new RelayCommand(
                 async o =>
                 {
-                    if (!string.IsNullOrEmpty(Message))
+                    if (!string.IsNullOrWhiteSpace(Message))
                     {
                         await _server.SendMessageAsync(Message);
+                        Messages.Add(new MessageModel
+                        {
+                            Username = Username,
+                            Message = Message,
+                            Time = DateTime.Now,
+                            IsOwnMessage = true
+                        });
                         Message = string.Empty;
                     }
                 },
@@ -124,9 +129,25 @@ namespace ChatClient.MVVM.ViewModel
 
         private void SubscribeToServerEvents()
         {
-            _server.ConnectedEvent += async () => await UserConnected();
-            _server.MessageReceivedEvent += (message) => MessageReceived(new MessageModel { Message = message });
-            _server.DisconnectedEvent += RemoveUser;
+            _server.MessageReceivedEvent += (message) => Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (SelectedContact != null)
+                {
+                    SelectedContact.Messages.Add(new MessageModel
+                    {
+                        Username = "Other",  
+                        Message = message,
+                        Time = DateTime.Now,
+                        IsOwnMessage = false
+                    });
+
+                    System.Diagnostics.Debug.WriteLine($"Message received and added to UI: {message}");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("No contact selected. Message not displayed");
+                }
+            });
         }
 
         private void InitializeCommands()
@@ -140,14 +161,20 @@ namespace ChatClient.MVVM.ViewModel
             SendMessageCommand = new RelayCommand(
                 async o =>
                 {
-
-                    if(!string.IsNullOrEmpty(Message))
+                    if (!string.IsNullOrWhiteSpace(Message) && SelectedContact != null)
                     {
+                        SelectedContact.Messages.Add(new MessageModel
+                        {
+                            Username = Username,
+                            Message = Message,
+                            Time = DateTime.Now,
+                            IsOwnMessage = true
+                        });
+
                         await _server.SendMessageAsync(Message);
+
                         Message = string.Empty;
                     }
-
-
                 },
                 o => !string.IsNullOrWhiteSpace(Message));
 

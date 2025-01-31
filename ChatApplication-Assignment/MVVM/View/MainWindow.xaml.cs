@@ -33,6 +33,17 @@ public partial class MainWindow : Window
         }
 
     }
+    private void ChatBox_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Return)
+        {
+            if (DataContext is MainViewModel viewModel && viewModel.SendMessageCommand.CanExecute(null))
+            {
+                viewModel.SendMessageCommand.Execute(null);
+                e.Handled = true;
+            }
+        }
+    }
 
     private void MinimizeButton_Click(object sender, RoutedEventArgs e)
     {
