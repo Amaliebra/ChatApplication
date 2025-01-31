@@ -31,7 +31,7 @@
                                     FontWeight="SemiBold"
                                     Foreground="#56C54C" />
                                 <Label
-                                    Content="{Binding LastMessage}"
+                                    Content="{Binding LastMessage, FallbackValue='(No messages)'}"
                                     FontSize="9"
                                     Foreground="#FF2F2E2E" />
                             </StackPanel>

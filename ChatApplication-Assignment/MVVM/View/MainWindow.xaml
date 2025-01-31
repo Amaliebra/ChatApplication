@@ -188,7 +188,7 @@
                 Background="Transparent"
                 BorderThickness="0"
                 ItemContainerStyle="{StaticResource ChatStyle}"
-                ItemsSource="{Binding SelectedContact.Messages}" />
+                ItemsSource="{Binding SelectedContact.Messages, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />

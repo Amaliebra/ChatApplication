@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ChatClient.MVVM.Model;
 
 namespace ChatClient;
 
@@ -69,7 +70,16 @@ public partial class MainWindow : Window
 
     private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        if (DataContext is MainViewModel viewModel && viewModel.SelectedContact != null)
+        {
+            var messages = viewModel.SelectedContact.Messages;
 
+            for (int i = 0; i < messages.Count; i++)
+            {
+                messages[i].FirstMessage = (i == 0);
+                messages[i].LastMessage = (i == messages.Count - 1);
+            }
+        }
     }
 
 }

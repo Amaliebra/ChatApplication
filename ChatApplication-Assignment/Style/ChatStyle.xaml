@@ -17,20 +17,21 @@
                                 <Label
                                     Margin="0,0,-5,0"
                                     VerticalAlignment="Center"
-                                    Content="{Binding Username}"
+                                    Content="{Binding Username, FallbackValue='(unknown user)'}"
+                                    FontSize="11"
                                     FontWeight="SemiBold"
                                     Foreground="{Binding UsernameColor, FallbackValue=Unknown}" />
                                 <Label
                                     VerticalAlignment="Center"
                                     Content="{Binding Time, StringFormat='hh:mm tt', FallbackValue='No Time'}"
-                                    FontSize="7"
+                                    FontSize="9"
                                     FontWeight="SemiBold"
                                     Foreground="#FF2F2E2E" />
                             </StackPanel>
                             <Label
                                 VerticalAlignment="Center"
                                 Content="{Binding Message}"
-                                FontSize="7"
+                                FontSize="11"
                                 FontWeight="SemiBold"
                                 Foreground="#FF2F2E2E" />
                         </StackPanel>
@@ -38,6 +39,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <!--
         <Style.Resources>
             <ControlTemplate x:Key="RowStyle">
                 <StackPanel Orientation="Horizontal">
@@ -48,12 +50,13 @@
                 </StackPanel>
             </ControlTemplate>
         </Style.Resources>
+
         <Style.Triggers>
             <DataTrigger Binding="{Binding FirstMessage}" Value="False">
                 <Setter Property="Template" Value="{StaticResource RowStyle}" />
             </DataTrigger>
         </Style.Triggers>
-
+        -->
     </Style>
 
 </ResourceDictionary>

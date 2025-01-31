@@ -14,8 +14,8 @@ namespace ChatClient.MVVM.ViewModel
         public ObservableCollection<MessageModel> Messages { get; private set; }
         public RelayCommand SendMessageCommand { get; set; }
         public RelayCommand ServerConnectCommand { get; set; }
+        public string UsernameColor { get; set; } = "#56C54C";
         public string Username { get; set; }
-
 
 
         private ContactModel _selectedContact;
@@ -23,7 +23,6 @@ namespace ChatClient.MVVM.ViewModel
         private readonly Server _server = new Server();
 
         private string _message;
-
         private bool _isConnected = false;
 
         public ContactModel SelectedContact
@@ -33,6 +32,7 @@ namespace ChatClient.MVVM.ViewModel
             {
                 _selectedContact = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedContact.Messages));
             }
         }
         public string Message
