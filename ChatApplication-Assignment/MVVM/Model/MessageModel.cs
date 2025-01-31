@@ -45,4 +45,5 @@ namespace ChatClient.MVVM.Model
             }
 
         }
+    }
 }

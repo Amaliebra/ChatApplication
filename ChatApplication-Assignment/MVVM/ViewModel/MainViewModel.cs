@@ -75,7 +75,6 @@ namespace ChatClient.MVVM.ViewModel
 
             _server.ConnectedEvent += UserConnected;
             _server.UserListUpdatedEvent += OnUserListUpdated;
-
             _server.ConnectToServerAsync(Username);
 
 
