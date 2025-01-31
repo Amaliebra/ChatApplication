@@ -40,45 +40,11 @@ namespace ChatClient.MVVM.ViewModel
             LoginCommand = new RelayCommand(o =>
             {
                 System.Diagnostics.Debug.WriteLine($"Attempting login as {Username}");
-
-                var mainViewModel = new MainViewModel(Username);
-
-                var mainWindow = new MainWindow { DataContext = mainViewModel };
-
-                Application.Current.Dispatcher.Invoke(() =>
+                var mainWindow = new MainWindow
                 {
-                    mainWindow.Show();
-
-                    foreach (Window window in Application.Current.Windows)
-                    {
-                        if (window is LoginView)
-                        {
-                            window.Close();
-                            break;
-                        }
-                    }
-                });
-            });
-
-        }
-        private void Login()
-        {
-            System.Diagnostics.Debug.WriteLine($"Attempting login as {Username}");
-
-            if (Application.Current.Windows.OfType<MainWindow>().Any())
-            {
-                System.Diagnostics.Debug.WriteLine("MainView open, skipping instance");
-                return;
-            }
-
-            var mainViewModel = new MainViewModel(Username);
-
-            var mainWindow = new MainWindow { DataContext = mainViewModel };
-
-            mainViewModel.InitializeConnection();
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
+                    DataContext = new MainViewModel(Username)
+                };
+                Application.Current.MainWindow = mainWindow;
                 mainWindow.Show();
 
                 foreach (Window window in Application.Current.Windows)
@@ -90,7 +56,38 @@ namespace ChatClient.MVVM.ViewModel
                     }
                 }
             });
+
         }
+        //private void Login()
+        //{
+        //    System.Diagnostics.Debug.WriteLine($"Attempting login as {Username}");
+
+        //    if (Application.Current.Windows.OfType<MainWindow>().Any())
+        //    {
+        //        System.Diagnostics.Debug.WriteLine("MainView open, skipping instance");
+        //        return;
+        //    }
+
+        //    var mainViewModel = new MainViewModel(Username);
+
+        //    var mainWindow = new MainWindow { DataContext = mainViewModel };
+
+        //    mainViewModel.InitializeConnection();
+
+        //    Application.Current.Dispatcher.Invoke(() =>
+        //    {
+        //        mainWindow.Show();
+
+        //        foreach (Window window in Application.Current.Windows)
+        //        {
+        //            if (window is LoginView)
+        //            {
+        //                window.Close();
+        //                break;
+        //            }
+        //        }
+        //    });
+        //}
     }
 
 }

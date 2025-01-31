@@ -17,10 +17,12 @@ namespace ChatClient;
 /// </summary>
 public partial class MainWindow : Window
 {
+    public string Username { get; }
+
     public MainWindow()
     {
         InitializeComponent();
-        DataContext = new MainViewModel("UsernameHere");
+        //DataContext = new MainViewModel(Username);
     }
 
     private void Border_MouseDown(object sender, MouseButtonEventArgs e)
