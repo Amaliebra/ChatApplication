@@ -39,12 +39,25 @@ namespace ChatClient.MVVM.ViewModel
 
             LoginCommand = new RelayCommand(o =>
             {
-                var mainView = new MainWindow
+                System.Diagnostics.Debug.WriteLine($"Attempting login as {Username}");
+
+                var mainViewModel = new MainViewModel(Username);
+
+                var mainWindow = new MainWindow { DataContext = mainViewModel };
+
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    DataContext = new MainViewModel(Username)
-                };
-                mainView.Show();
-                Application.Current.MainWindow.Close();
+                    mainWindow.Show();
+
+                    foreach (Window window in Application.Current.Windows)
+                    {
+                        if (window is LoginView)
+                        {
+                            window.Close();
+                            break;
+                        }
+                    }
+                });
             });
 
         }
@@ -58,7 +71,7 @@ namespace ChatClient.MVVM.ViewModel
                 return;
             }
 
-            var mainViewModel = new MainViewModel { Username = this.Username };
+            var mainViewModel = new MainViewModel(Username);
 
             var mainWindow = new MainWindow { DataContext = mainViewModel };
 

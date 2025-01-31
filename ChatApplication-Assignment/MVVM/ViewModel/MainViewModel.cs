@@ -47,12 +47,13 @@ namespace ChatClient.MVVM.ViewModel
             }
         }
 
-        public MainViewModel(string Username)
+        public MainViewModel() : this("DefaultUser") { }
+        public MainViewModel(string username)
         {
             System.Diagnostics.Debug.WriteLine("MainViewModel called");
 
+            Username = username ?? "DefaultUser";
             Users = new ObservableCollection<UserModel>();
-            //Messages = new ObservableCollection<string>();
             Contacts = new ObservableCollection<ContactModel>();
             Messages = new ObservableCollection<MessageModel>();
 
@@ -67,80 +68,11 @@ namespace ChatClient.MVVM.ViewModel
                 },
                 o => !string.IsNullOrWhiteSpace(Message));
 
-            Messages.Add(new MessageModel
-            {
-                Username = "Bobby",
-                ImageSource = "",
-                Message = "Test",
-                Time = DateTime.Now,
-                IsOwnMessage = false,
-                FirstMessage = true
-            });
+            _server.ConnectedEvent += UserConnected;
+            _server.UserListUpdatedEvent += OnUserListUpdated;
 
-            for (int i = 0; i < 3; i++)
-            {
-                Messages.Add(new MessageModel
-                {
-                    Username = "Allison",
-                    UsernameColor = "#509aef",
-                    Message = "Test",
-                    ImageSource = "/Resources/profile3.png",
-                    Time = DateTime.Now,
-                    IsOwnMessage = false,
-                    FirstMessage = false
-                });
-            }
+            _server.ConnectToServerAsync(Username);
 
-            for (int i = 0; i < 40; i++)
-            {
-                Messages.Add(new MessageModel
-                {
-                    Username = "Livv",
-                    UsernameColor = "#ff3a51",
-                    ImageSource = "/Resources/profile3.png",
-                    Message = "Test",
-                    Time = DateTime.Now,
-                    IsOwnMessage = true,
-                });
-            }
-
-            Messages.Add(new MessageModel
-            {
-                Username = "Borris",
-                UsernameColor = "#409aff",
-                ImageSource = "/Resources/profile3.png",
-                Message = "Last",
-                Time = DateTime.Now,
-                IsOwnMessage = true,
-            });
-
-            for (int i = 0; i < 5; i++)
-            {
-                Contacts.Add(new ContactModel
-                {
-                    Username = $"Jermie {i}",
-                    ImageSource = "./Resources/profile2.jpg",
-                    Messages = Messages
-                });
-                Contacts.Add(new ContactModel
-                {
-                    Username = $"Joe {i}",
-                    ImageSource = "Resources/profile1.jpg",
-                    Messages = Messages
-                });
-                Contacts.Add(new ContactModel
-                {
-                    Username = $"Anne {i}",
-                    ImageSource = "Resources/profile3.jpg",
-                    Messages = Messages
-                });
-                Contacts.Add(new ContactModel
-                {
-                    Username = $"Lyle {i}",
-                    ImageSource = "Resources/profile3.jpg",
-                    Messages = Messages
-                });
-            }
 
 
             InitializeCommands();
@@ -166,6 +98,27 @@ namespace ChatClient.MVVM.ViewModel
                 System.Diagnostics.Debug.WriteLine($"Attempting to connect as {Username}");
                 await _server.ConnectToServerAsync(Username);
                 System.Diagnostics.Debug.WriteLine($"Connection request sent for {Username}");
+            });
+        }
+
+        private void OnUserListUpdated(List<string> userList)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Users.Clear();
+                Contacts.Clear();
+
+                foreach (var user in userList)
+                {
+                    var newUser = new UserModel { Username = user };
+
+                    Users.Add(newUser);
+                    Contacts.Add(new ContactModel
+                    {
+                        Username = user,
+                        Messages = new ObservableCollection<MessageModel>(),
+                    });
+                }
             });
         }
 
@@ -209,7 +162,16 @@ namespace ChatClient.MVVM.ViewModel
 
         private void MessageReceived(MessageModel message)
         {
-            Application.Current.Dispatcher.Invoke(() => Messages.Add(message));
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Messages.Add(message);
+
+                var contact = Contacts.FirstOrDefault(c => c.Username == message.Username);
+                if (contact != null)
+                {
+                    contact.Messages.Add(message);
+                }
+            });
         }
 
         private async Task UserConnected()

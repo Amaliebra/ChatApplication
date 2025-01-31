@@ -7,10 +7,11 @@ namespace ChatClient.Net
     {
         private TcpClient _client;
         public PacketReader PacketReader { get; private set; }
-
-        public event Func<Task> ConnectedEvent;
+        public event Func<Task> ConnectedEvent; /// FIX THISS REMINDERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
         public event Action<string> MessageReceivedEvent;
         public event Action DisconnectedEvent;
+        public event Action<List<string>> UserListUpdatedEvent;
+        private List<string> _connectedUsers = new();
 
         public async Task ConnectToServerAsync(string username, int maxRetries = 5, int delayRetries = 2000)
         {
@@ -24,7 +25,7 @@ namespace ChatClient.Net
                     if (_client != null && _client.Connected)
                     {
                         Console.WriteLine("Already connected to the server.");
-                        return; // Prevent duplicate connection attempts
+                        return;
                     }
 
                     _client = new TcpClient();
@@ -38,8 +39,11 @@ namespace ChatClient.Net
                     packetBuilder.WriteOpCode(0);
                     packetBuilder.WriteString(username);
                     await _client.GetStream().WriteAsync(packetBuilder.GetPacketBytes());
-
-                    break;
+                    if (!_connectedUsers.Contains(username))
+                    {
+                        _connectedUsers.Add(username);
+                        UserListUpdatedEvent?.Invoke(new List<string>(_connectedUsers));
+                    }
                 }
                 catch (Exception ex)
                 {
