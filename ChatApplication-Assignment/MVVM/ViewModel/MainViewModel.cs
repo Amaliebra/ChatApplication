@@ -184,7 +184,7 @@ namespace ChatClient.MVVM.ViewModel
         private async void RemoveUser()
         {
             var uid = await _server.PacketReader.ReadStringAsync();
-            var user = Users.FirstOrDefault(x => x.UID == uid);
+            var user = Users.FirstOrDefault(x => x.UID == uid); ////FIX THIS-------------------
             Application.Current.Dispatcher.Invoke(() => Users.Remove(user));
         }
 

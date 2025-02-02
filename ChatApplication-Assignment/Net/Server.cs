@@ -1,5 +1,7 @@
 ﻿using ChatClient.Net.IO;
 using System.Net.Sockets;
+using ChatClient.MVVM.Model;
+using ChatClient.MVVM.ViewModel;
 
 namespace ChatClient.Net
 {
@@ -37,7 +39,7 @@ namespace ChatClient.Net
                     Console.WriteLine($"Transmitting username: {username}");
                     var packetBuilder = new PacketBuilder();
                     packetBuilder.WriteOpCode(0);
-                    packetBuilder.WriteString(username);
+                    packetBuilder.WriteString(SelectedContact.UID.ToString());//FIX THIS---------------------------
                     await _client.GetStream().WriteAsync(packetBuilder.GetPacketBytes());
                     if (!_connectedUsers.Contains(username))
                     {

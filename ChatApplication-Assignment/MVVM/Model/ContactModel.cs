@@ -9,6 +9,6 @@ namespace ChatClient.MVVM.Model
         public ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
         public string LastMessage => Messages.LastOrDefault()?.Message ?? "";
 
-        public string UID { get; set; }
+        public Guid UID { get; private set; }
     }
 }
