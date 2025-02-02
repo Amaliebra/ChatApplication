@@ -32,8 +32,8 @@ namespace ChatClient.Net.IO
 
         public async Task<string> ReadStringAsync()
         {
-            var lengthBuffer = new byte[2];
-            await BaseStream.ReadAsync(lengthBuffer, 0, 2);
+            var lengthBuffer = new byte[4];
+            await BaseStream.ReadAsync(lengthBuffer, 0, 4);
             var length = BitConverter.ToInt16(lengthBuffer, 0);
 
             var stringBuffer = new byte[length];
