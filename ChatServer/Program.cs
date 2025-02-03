@@ -1,4 +1,5 @@
 ﻿
+using ChatServer.Net;
 using ChatServer.Net.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -6,12 +7,11 @@ using System.Net.Sockets;
 public class Program
 {
     private TcpListener _server;
-    private List<TcpClient> _clients;
+    private List<Client> _clients = new List<Client>();
 
     public Program(string ip, int port)
     {
         _server = new TcpListener(IPAddress.Any, port);
-        _clients = new List<TcpClient>();
     }
 
     public static async Task Main(string[] args)
@@ -19,6 +19,11 @@ public class Program
         var program = new Program("127.0.0.1", 5000);
         await program.StartAsync();
     }
+    private Client ClientForTcp(TcpClient tcpClient)
+    {
+        return _clients.FirstOrDefault(c => c.ClientSocket == tcpClient);
+    }
+
 
     public async Task StartAsync()
     {
@@ -28,50 +33,75 @@ public class Program
         while (true)
         {
             Console.WriteLine("Waiting for a client...");
-            var client = await _server.AcceptTcpClientAsync();
+            var tcpClient = await _server.AcceptTcpClientAsync();
 
-            // Prevent duplicate clients (check if they are already connected)
-            if (_clients.Any(c => ((IPEndPoint)c.Client.RemoteEndPoint).Address.Equals(((IPEndPoint)client.Client.RemoteEndPoint).Address)))
+
+            if (_clients.Any(c => ((IPEndPoint)c.ClientSocket.RemoteEndPoint).Address.Equals(
+                                     ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address)))
             {
                 Console.WriteLine("Duplicate client detected, rejecting connection.");
-                client.Close();
+                tcpClient.Close();
                 continue;
             }
+            var clientWrapper = new Client(tcpClient);
+            _clients.Add(clientWrapper);
+            Console.WriteLine($"Client connected: {((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address}");
 
-            _clients.Add(client);
-            Console.WriteLine($"Client connected: {((IPEndPoint)client.Client.RemoteEndPoint).Address}");
-
-            _ = Task.Run(() => HandleClientAsync(client));
+            _ = Task.Run(() => HandleClientAsync(clientWrapper));
         }
     }
 
     private async Task HandleClientAsync(TcpClient client)
     {
+        TcpClient tcpClient = clientWrapper.ClientSocket;
         try
         {
-            using var networkStream = client.GetStream();
+            using var networkStream = tcpClient.GetStream();
             var packetReader = new PacketReader(networkStream);
-            Console.WriteLine("Handling client...");
 
-            Console.WriteLine($"Client connected: {client.Client.RemoteEndPoint}");
-
-            _clients.Add(client);
+            string senderUsername = clientWrapper.Username ?? "Unknown";
             while (true)
             {
-                Console.WriteLine("Waiting for client data...");
+                Console.WriteLine($"{DateTime.Now} - Waiting for client data...");
                 var opCode = await packetReader.ReadOpcodeAsync();
-                Console.WriteLine($"Opcode received: {opCode}");
-                var message = await packetReader.ReadStringAsync();
-                Console.WriteLine($"Received message: {message}");
+                Console.WriteLine($"{DateTime.Now} - Opcode received: {opCode}");
 
-                foreach (var connectedClient in _clients)
+                if (opCode == 5)
                 {
-                    var stream = connectedClient.GetStream();
-                    var packetBuilder = new PacketBuilder();
-                    packetBuilder.WriteOpCode(opCode);
-                    packetBuilder.WriteString(message);
-                    var packetBytes = packetBuilder.GetPacketBytes();
-                    await stream.WriteAsync(packetBytes, 0, packetBytes.Length);
+                    var recipient = await packetReader.ReadStringAsync();
+                    var messageText = await packetReader.ReadStringAsync();
+                    Console.WriteLine($"{DateTime.Now} - Direct message from {senderUsername} to {recipient}: {messageText}");
+
+                    var targetClient = _clients.FirstOrDefault(c => c.Username == recipient);
+                    if (targetClient != null)
+                    {
+                        var forwardPacket = new PacketBuilder();
+                        forwardPacket.WriteOpCode(5);
+                        forwardPacket.WriteString(senderUsername);
+                        forwardPacket.WriteString(messageText);
+                        var packetBytes = forwardPacket.GetPacketBytes();
+
+                        await targetClient.ClientSocket.GetStream().WriteAsync(packetBytes, 0, packetBytes.Length);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Recipient {recipient} not found.");
+                    }
+                }
+                else
+                {
+                    var message = await packetReader.ReadStringAsync();
+                    Console.WriteLine($"{DateTime.Now} - Received message: {message}");
+
+                    foreach (var connectedClient in _clients)
+                    {
+                        var stream = connectedClient.ClientSocket.GetStream();
+                        var packetBuilder = new PacketBuilder();
+                        packetBuilder.WriteOpCode(opCode);
+                        packetBuilder.WriteString(message);
+                        var packetBytes = packetBuilder.GetPacketBytes();
+                        await stream.WriteAsync(packetBytes, 0, packetBytes.Length);
+                    }
                 }
             }
         }
@@ -82,8 +112,30 @@ public class Program
         finally
         {
             Console.WriteLine("Removing client from server");
-            _clients.RemoveAll(c => c == client);
-            client.Close();
+            _clients.Remove(clientWrapper);
+            tcpClient.Close();
+        }
+    }
+    private void HandleDirectMessage(Client sender, string recipient, string messageText)
+    {
+        Console.WriteLine($"Direct message from {sender.Username} to {recipient}: {messageText}");
+
+        var targetClient = _clients.FirstOrDefault(c => c.Username == recipient);
+        if (targetClient != null)
+        {
+
+            var forwardPacket = new PacketBuilder();
+            forwardPacket.WriteOpCode(5);
+
+            forwardPacket.WriteString(sender.Username);
+            forwardPacket.WriteString(messageText);
+
+            var packetBytes = forwardPacket.GetPacketBytes();
+            targetClient.ClientSocket.GetStream().WriteAsync(packetBytes, 0, packetBytes.Length);
+        }
+        else
+        {
+            Console.WriteLine($"Recipient {recipient} not found.");
         }
     }
 }

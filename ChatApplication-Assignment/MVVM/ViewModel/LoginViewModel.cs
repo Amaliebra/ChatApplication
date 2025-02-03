@@ -8,6 +8,7 @@ namespace ChatClient.MVVM.ViewModel
 {
     class LoginViewModel : ObservableObject
     {
+        public string ProfileImage { get; set; }
         public string Username { get; set; }
         public string Password { get; set; } = "password";
         public RelayCommand LoginCommand { get; set; }

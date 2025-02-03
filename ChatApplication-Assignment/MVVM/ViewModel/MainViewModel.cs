@@ -3,6 +3,7 @@ using ChatClient.MVVM.Core;
 using ChatClient.Net;
 using System.Collections.ObjectModel;
 using System.Windows;
+using ChatClient.Net.IO;
 
 namespace ChatClient.MVVM.ViewModel
 {
@@ -45,7 +46,6 @@ namespace ChatClient.MVVM.ViewModel
             }
         }
 
-        public MainViewModel() : this("DefaultUser") { }
         public MainViewModel(string username)
         {
             System.Diagnostics.Debug.WriteLine("MainViewModel called");
@@ -60,7 +60,6 @@ namespace ChatClient.MVVM.ViewModel
                 {
                     if (!string.IsNullOrWhiteSpace(Message))
                     {
-                        await _server.SendMessageAsync(Message);
                         Messages.Add(new MessageModel
                         {
                             Username = Username,
@@ -162,22 +161,26 @@ namespace ChatClient.MVVM.ViewModel
                 {
                     if (!string.IsNullOrWhiteSpace(Message) && SelectedContact != null)
                     {
-                        var newMessage = new MessageModel
+
+                        var packetBuilder = new PacketBuilder();
+                        packetBuilder.WriteOpCode(5);
+                        packetBuilder.WriteString(SelectedContact.Username);
+                        packetBuilder.WriteString(Message);
+
+                        await _server.SendMessageAsync(packetBuilder.GetPacketBytes());
+
+                        SelectedContact.Messages.Add(new MessageModel
                         {
-                            Username = Username, 
+                            Username = Username,
                             Message = Message,
                             Time = DateTime.Now,
                             IsOwnMessage = true
-                        };
+                        });
 
-                        System.Diagnostics.Debug.WriteLine($"Sending Message: {newMessage.Username} at {newMessage.Time} - {newMessage.Message}");
-
-                        SelectedContact.Messages.Add(newMessage);
-                        await _server.SendMessageAsync(Message);
                         Message = string.Empty;
                     }
                 },
-                o => !string.IsNullOrWhiteSpace(Message));
+                o => !string.IsNullOrWhiteSpace(Message) && SelectedContact != null);
 
         }
 

@@ -1,6 +1,8 @@
 ﻿using ChatServer.Net.IO;
-using ChatServer.Net;
+using System;
+using System.IO;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace ChatServer.Net
 {
@@ -8,11 +10,11 @@ namespace ChatServer.Net
     {
         public string Username { get; private set; }
         public Guid UID { get; private set; }
-        public TcpClient ClientSocket { get; private set; }
+        public TcpClient ClientSocket { get; }
 
         private PacketReader _packetReader;
 
-        public event Action<Client, string> MessageReceived;
+        public event Action<Client, string, string> DirectMessageReceived;
         public event Action<Client> Disconnected;
 
         public Client(TcpClient client)
@@ -29,7 +31,12 @@ namespace ChatServer.Net
         {
             try
             {
-                var opcode = await _packetReader.ReadOpcodeAsync();
+                byte opcode = await _packetReader.ReadOpcodeAsync();
+                if (opcode != 1)
+                {
+                    throw new Exception("Expected registration opcode.");
+                }
+
                 Username = await _packetReader.ReadStringAsync();
                 Console.WriteLine($"{Username} connected!");
             }
@@ -47,33 +54,28 @@ namespace ChatServer.Net
             {
                 while (true)
                 {
-                    try
+                    var opcode = await _packetReader.ReadOpcodeAsync();
+                    switch (opcode)
                     {
-                        var opcode = await _packetReader.ReadOpcodeAsync();
-                        switch (opcode)
-                        {
-                            case 5:
-                                var message = await _packetReader.ReadStringAsync();
-                                Console.WriteLine($"[{DateTime.Now}] {Username}: {message}");
+                        case 5:
 
-                                MessageReceived?.Invoke(this, message);
-                                break;
-                            default:
-                                Console.WriteLine($"Unknown opcode: {opcode}");
-                                break;
-                        }
-                    }
-                    catch (IOException)
-                    {
-                        Console.WriteLine($"{Username} disconnected unexpectedly.");
-                        break;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error processing client {Username}: {ex.Message}");
-                        break;
+                            var recipient = await _packetReader.ReadStringAsync();
+                            var messageText = await _packetReader.ReadStringAsync();
+                            DirectMessageReceived?.Invoke(this, recipient, messageText);
+                            break;
+                        default:
+                            Console.WriteLine($"Unknown opcode: {opcode}");
+                            break;
                     }
                 }
+            }
+            catch (IOException)
+            {
+                Console.WriteLine($"{Username} disconnected unexpectedly.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error processing client {Username}: {ex.Message}");
             }
             finally
             {
