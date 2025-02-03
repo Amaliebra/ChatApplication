@@ -19,11 +19,6 @@ public class Program
         var program = new Program("127.0.0.1", 5000);
         await program.StartAsync();
     }
-    //private Client ClientForTcp(TcpClient tcpClient)
-    //{
-    //    return _clients.FirstOrDefault(c => c.ClientSocket == tcpClient);
-    //}
-
 
     public async Task StartAsync()
     {
@@ -49,6 +44,7 @@ public class Program
             clientWrapper.Disconnected += HandleClientDisconnected;
             _clients.Add(clientWrapper);
             Console.WriteLine($"Client connected: {((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address}");
+            await BroadcastUser();
 
         }
     }
@@ -84,10 +80,37 @@ public class Program
         }
     }
 
-    private void HandleClientDisconnected(Client client)
+    private async void HandleClientDisconnected(Client client)
     {
         Console.WriteLine($"{client.Username} disconnected.");
         _clients.Remove(client);
+        await BroadcastUser();
+    }
+
+    private async Task BroadcastUser()
+    {
+        var userList = _clients
+            .Select(c => c.Username)
+            .Where(u => !string.IsNullOrEmpty(u))
+            .ToList();
+        string UserListString = string.Join(",", userList);
+
+        var packetBuilder = new PacketBuilder();
+        packetBuilder.WriteOpCode(2);
+        packetBuilder.WriteString(UserListString);
+        byte[] packetBytes = packetBuilder.GetPacketBytes();
+
+        foreach (var client in _clients)
+        {
+            try
+            {
+                await client.ClientSocket.GetStream().WriteAsync(packetBytes, 0, packetBytes.Length);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending user list to {client.Username}: {ex.Message}");
+            }
+        }
     }
 }
 

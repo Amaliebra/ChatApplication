@@ -79,10 +79,15 @@ namespace ChatClient.Net
                             if (ConnectedEvent != null)
                                 await ConnectedEvent.Invoke();
                             break;
+                        case 2:
+                            var userListStr = await PacketReader.ReadStringAsync();
+                            var users = userListStr.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                                   .ToList();
+                            UserListUpdatedEvent?.Invoke(users);
+                            break;
                         case 5:
                             var senderUsername = await PacketReader.ReadStringAsync();
                             var messageText = await PacketReader.ReadStringAsync();
-
                             Console.WriteLine($"[{DateTime.Now}] {messageText}");
                             MessageReceivedEvent?.Invoke($"{senderUsername}: {messageText}");
                             break;
