@@ -23,8 +23,13 @@ namespace ChatServer.Net
             UID = Guid.NewGuid();
             _packetReader = new PacketReader(ClientSocket.GetStream());
 
-            _ = InitializeAsync();
-            _ = ProcessAsync();
+            InitializeAsync().ContinueWith(initTask =>
+            {
+                if (initTask.Status == TaskStatus.RanToCompletion)
+                {
+                    _ = ProcessAsync();
+                }
+            });
         }
 
         private async Task InitializeAsync()
