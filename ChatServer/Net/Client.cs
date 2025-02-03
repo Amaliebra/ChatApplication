@@ -1,4 +1,5 @@
 ﻿using ChatServer.Net.IO;
+using ChatServer.Net;
 using System.Net.Sockets;
 
 namespace ChatServer.Net
@@ -64,19 +65,19 @@ namespace ChatServer.Net
                     }
                     catch (IOException)
                     {
-                        Console.WriteLine($"⚠️ {Username} disconnected unexpectedly.");
+                        Console.WriteLine($"{Username} disconnected unexpectedly.");
                         break;
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"❌ Error processing client {Username}: {ex.Message}");
+                        Console.WriteLine($"Error processing client {Username}: {ex.Message}");
                         break;
                     }
                 }
             }
             finally
             {
-                Console.WriteLine($"🚪 Removing {Username} from the server.");
+                Console.WriteLine($"Removing {Username} from the server.");
                 Disconnected?.Invoke(this);
                 ClientSocket.Dispose();
             }
