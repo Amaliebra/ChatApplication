@@ -1,8 +1,12 @@
 ﻿using ChatClient.Net.IO;
+using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Net;
+using System.Threading.Tasks;
+using System.Text;
 using ChatClient.MVVM.Model;
 using ChatClient.MVVM.ViewModel;
-using ChatClient.Net;
 
 namespace ChatClient.Net
 {
@@ -10,7 +14,7 @@ namespace ChatClient.Net
     {
         private TcpClient _client;
         public PacketReader PacketReader { get; private set; }
-        public event Func<Task> ConnectedEvent; /// FIX THISS REMINDERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+        public event Func<Task> ConnectedEvent;
         public event Action<string> MessageReceivedEvent;
         public event Action DisconnectedEvent;
         public event Action<List<string>> UserListUpdatedEvent;
@@ -41,7 +45,7 @@ namespace ChatClient.Net
 
                     Console.WriteLine($"Transmitting username: {username}");
                     var packetBuilder = new PacketBuilder();
-                    packetBuilder.WriteOpCode(0); 
+                    packetBuilder.WriteOpCode(1);
                     packetBuilder.WriteString(username);
                     await _client.GetStream().WriteAsync(packetBuilder.GetPacketBytes());
 
@@ -52,7 +56,6 @@ namespace ChatClient.Net
                     }
 
                     return;
-                 
                 }
                 catch (Exception ex)
                 {
@@ -77,11 +80,11 @@ namespace ChatClient.Net
                                 await ConnectedEvent.Invoke();
                             break;
                         case 5:
-                            var MessageText = await PacketReader.ReadStringAsync();
-                            var SenderUsername = await PacketReader.ReadStringAsync();
+                            var senderUsername = await PacketReader.ReadStringAsync();
+                            var messageText = await PacketReader.ReadStringAsync();
 
-                            Console.WriteLine($"[{DateTime.Now}] {MessageText}");
-                            MessageReceivedEvent?.Invoke($"{SenderUsername}: {MessageText}");
+                            Console.WriteLine($"[{DateTime.Now}] {messageText}");
+                            MessageReceivedEvent?.Invoke($"{senderUsername}: {messageText}");
                             break;
                         case 10:
                             DisconnectedEvent?.Invoke();
@@ -97,7 +100,6 @@ namespace ChatClient.Net
                 Console.WriteLine($"Error reading packet: {ex.Message}");
                 DisconnectedEvent?.Invoke();
             }
-
         }
 
         public async Task SendMessageAsync(byte[] data)
