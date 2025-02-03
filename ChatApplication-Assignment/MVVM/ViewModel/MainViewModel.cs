@@ -181,26 +181,26 @@ namespace ChatClient.MVVM.ViewModel
 
         }
 
-        private async void RemoveUser()
-        {
-            var uid = await _server.PacketReader.ReadStringAsync();
-            var user = Users.FirstOrDefault(x => x.UID == uid);
-            Application.Current.Dispatcher.Invoke(() => Users.Remove(user));
-        }
+        //private async void RemoveUser()
+        //{
+        //    var uid = await _server.PacketReader.ReadStringAsync();
+        //    var user = Users.FirstOrDefault(x => x.UID == uid);
+        //    Application.Current.Dispatcher.Invoke(() => Users.Remove(user));
+        //}
 
-        private void MessageReceived(MessageModel message)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                Messages.Add(message);
+        //private void MessageReceived(MessageModel message)
+        //{
+        //    Application.Current.Dispatcher.Invoke(() =>
+        //    {
+        //        Messages.Add(message);
 
-                var contact = Contacts.FirstOrDefault(c => c.Username == message.Username);
-                if (contact != null)
-                {
-                    contact.Messages.Add(message);
-                }
-            });
-        }
+        //        var contact = Contacts.FirstOrDefault(c => c.Username == message.Username);
+        //        if (contact != null)
+        //        {
+        //            contact.Messages.Add(message);
+        //        }
+        //    });
+        //}
 
         private async Task UserConnected()
         {

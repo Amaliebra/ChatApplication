@@ -58,36 +58,36 @@ namespace ChatClient.MVVM.ViewModel
             });
 
         }
-        //private void Login()
-        //{
-        //    System.Diagnostics.Debug.WriteLine($"Attempting login as {Username}");
+        private void Login()
+        {
+            System.Diagnostics.Debug.WriteLine($"Attempting login as {Username}");
 
-        //    if (Application.Current.Windows.OfType<MainWindow>().Any())
-        //    {
-        //        System.Diagnostics.Debug.WriteLine("MainView open, skipping instance");
-        //        return;
-        //    }
+            if (Application.Current.Windows.OfType<MainWindow>().Any())
+            {
+                System.Diagnostics.Debug.WriteLine("MainView open, skipping instance");
+                return;
+            }
 
-        //    var mainViewModel = new MainViewModel(Username);
+            var mainViewModel = new MainViewModel(Username);
 
-        //    var mainWindow = new MainWindow { DataContext = mainViewModel };
+            var mainWindow = new MainWindow { DataContext = mainViewModel };
 
-        //    mainViewModel.InitializeConnection();
+            mainViewModel.InitializeConnection();
 
-        //    Application.Current.Dispatcher.Invoke(() =>
-        //    {
-        //        mainWindow.Show();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                mainWindow.Show();
 
-        //        foreach (Window window in Application.Current.Windows)
-        //        {
-        //            if (window is LoginView)
-        //            {
-        //                window.Close();
-        //                break;
-        //            }
-        //        }
-        //    });
-        //}
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window is LoginView)
+                    {
+                        window.Close();
+                        break;
+                    }
+                }
+            });
+        }
     }
 
 }
