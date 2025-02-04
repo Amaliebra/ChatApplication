@@ -54,7 +54,8 @@ public class Program
     {
         Console.WriteLine($"Direct message from {sender.Username} to {recipient}: {messageText}");
 
-        var targetClient = _clients.FirstOrDefault(c => c.Username == recipient);
+        var targetClient = _clients.FirstOrDefault(c => c.Username == recipient && c.ClientSocket.Connected);
+
         if (targetClient != null)
         {
 

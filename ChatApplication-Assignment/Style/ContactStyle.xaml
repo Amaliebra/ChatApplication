@@ -21,7 +21,7 @@
 
                             <Ellipse Width="30" Height="30">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding ImageSource}" />
+                                    <SolidColorBrush Color="#56C54C" />
                                 </Ellipse.Fill>
                             </Ellipse>
 
@@ -29,7 +29,7 @@
                                 <Label
                                     Content="{Binding Username}"
                                     FontWeight="SemiBold"
-                                    Foreground="#56C54C" />
+                                    Foreground="#FF2F2E2E" />
                                 <Label
                                     Content="{Binding LastMessage, FallbackValue='(No messages)'}"
                                     FontSize="9"

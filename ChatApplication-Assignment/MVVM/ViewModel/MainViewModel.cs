@@ -58,19 +58,35 @@ namespace ChatClient.MVVM.ViewModel
             SendMessageCommand = new RelayCommand(
                 async o =>
                 {
-                    if (!string.IsNullOrWhiteSpace(Message))
+                    if (!string.IsNullOrWhiteSpace(Message) && SelectedContact != null)
                     {
-                        Messages.Add(new MessageModel
+                        if (Contacts.Any(c => c.Username == SelectedContact.Username))
                         {
-                            Username = Username,
-                            Message = Message,
-                            Time = DateTime.Now,
-                            IsOwnMessage = true
-                        });
-                        Message = string.Empty;
+                            var packetBuilder = new PacketBuilder();
+                            packetBuilder.WriteOpCode(5);
+                            packetBuilder.WriteString(SelectedContact.Username);
+                            packetBuilder.WriteString(Message);
+
+                            await _server.SendMessageAsync(packetBuilder.GetPacketBytes());
+
+                            SelectedContact.Messages.Add(new MessageModel
+                            {
+                                Username = Username,
+                                Message = Message,
+                                Time = DateTime.Now,
+                                IsOwnMessage = true
+                            });
+
+                            Message = string.Empty;
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Cannot send message. {SelectedContact.Username} is offline.");
+                            MessageBox.Show($"{SelectedContact.Username} is offline. Message not sent.");
+                        }
                     }
                 },
-                o => !string.IsNullOrWhiteSpace(Message));
+                o => !string.IsNullOrWhiteSpace(Message) && SelectedContact != null);
 
             _server.ConnectedEvent += UserConnected;
             _server.UserListUpdatedEvent += OnUserListUpdated;
@@ -124,6 +140,18 @@ namespace ChatClient.MVVM.ViewModel
                 }
             });
         }
+
+        //private void OnUserListUpdated(List<string> userList)
+        //{
+        //    Application.Current.Dispatcher.Invoke(() =>
+        //    {
+        //        foreach (var contact in Contacts)
+        //        {
+        //            contact.IsOnline = userList.Contains(contact.Username);
+        //        }
+        //    });
+        //}
+
 
         private void SubscribeToServerEvents()
         {

@@ -162,6 +162,7 @@
                         Margin="2,0,2,0"
                         VerticalAlignment="Center"
                         Content="{Binding SelectedContact.Username}"
+                        FontSize="10"
                         FontWeight="bold"
                         Foreground="#FF2F2E2E" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
