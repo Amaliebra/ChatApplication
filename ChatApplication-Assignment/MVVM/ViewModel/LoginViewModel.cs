@@ -19,14 +19,14 @@ namespace ChatClient.MVVM.ViewModel
             "CoolCat123",
             "N00b_Destroyer_1337",
             "I_H4t3_L1f3_xD",
-            "xX_Slay3r_Xx",
+            "xX_Slayer_Xx",
             "SkullzOnF1r3",
-            "Xx_D3thStalker_xX",
+            "Xx_D3athStalker_xX",
             "Pwnz0r",
             "xXx_1337_xXx",
-            "R4venBl8de",
+            "R4venBlade",
             "D3athM4ch1n3",
-            "AKSprayL0rd",
+            "AKSprayLord",
             "Pray_N_Spray",
         };
 

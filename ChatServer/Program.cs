@@ -98,7 +98,7 @@ public class Program
     private async Task BroadcastUser()
     {
         var userList = _clients
-            .Select(c => c.Username?.Trim())
+            .Select(c => c.Username?.Trim()) //MIGHT NEED TO REMOVE THIS-------------------------------------------------
             .Where(u => !string.IsNullOrEmpty(u))
             .ToList();
 
