@@ -98,10 +98,12 @@ public class Program
     private async Task BroadcastUser()
     {
         var userList = _clients
-            .Select(c => c.Username)
+            .Select(c => c.Username?.Trim())
             .Where(u => !string.IsNullOrEmpty(u))
             .ToList();
+
         string UserListString = string.Join(",", userList);
+        System.Diagnostics.Debug.WriteLine($"[DEBUG] Sending user list: {UserListString}");
 
         var packetBuilder = new PacketBuilder();
         packetBuilder.WriteOpCode(2);
