@@ -68,7 +68,14 @@ public class Program
 
             try
             {
-                targetClient.ClientSocket.GetStream().WriteAsync(packetBytes, 0, packetBytes.Length);
+                if (targetClient.ClientSocket.Connected)
+                {
+                    targetClient.ClientSocket.GetStream().WriteAsync(packetBytes, 0, packetBytes.Length);
+                }
+                else
+                {
+                    Console.WriteLine($"Client {targetClient.Username} is disconnected.");
+                }
             }
             catch (Exception ex)
             {

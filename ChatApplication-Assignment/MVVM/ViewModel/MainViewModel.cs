@@ -15,9 +15,20 @@ namespace ChatClient.MVVM.ViewModel
         public ObservableCollection<MessageModel> Messages { get; private set; }
         public RelayCommand SendMessageCommand { get; set; }
         public RelayCommand ServerConnectCommand { get; set; }
-        public string UsernameColor { get; set; } = "#56C54C";
         public string Username { get; set; }
 
+        private string _defaultColor = "#8a6130";
+        private string _ownColor = "#56C54C";
+
+        public string UsernameColor
+        {
+            get
+            {
+                if (SelectedContact == null) return _defaultColor;
+
+                return (SelectedContact.Username == Username) ? _ownColor : _defaultColor;
+            }
+        }
 
         private ContactModel _selectedContact;
 
@@ -34,6 +45,7 @@ namespace ChatClient.MVVM.ViewModel
                 _selectedContact = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(SelectedContact.Messages));
+                OnPropertyChanged(nameof(UsernameColor)); 
             }
         }
         public string Message
@@ -124,19 +136,33 @@ namespace ChatClient.MVVM.ViewModel
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                Users.Clear();
+                var previousContact = SelectedContact?.Username;
+
+                var updatedContacts = Contacts.Where(c => userList.Contains(c.Username)).ToList();
                 Contacts.Clear();
 
                 foreach (var user in userList)
                 {
-                    var newUser = new UserModel { Username = user };
-
-                    Users.Add(newUser);
-                    Contacts.Add(new ContactModel
+                    var existingContact = updatedContacts.FirstOrDefault(c => c.Username == user);
+                    if (existingContact != null)
                     {
-                        Username = user,
-                        Messages = new ObservableCollection<MessageModel>(),
-                    });
+                        Contacts.Add(existingContact);
+                    }
+                    else
+                    {
+                        Contacts.Add(new ContactModel
+                        {
+                            Username = user,
+                            Messages = new ObservableCollection<MessageModel>(),
+                        });
+                    }
+                }
+
+                SelectedContact = Contacts.FirstOrDefault(c => c.Username == previousContact);
+
+                if (SelectedContact == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Warning: SelectedContact was lost after contact list update.");
                 }
             });
         }

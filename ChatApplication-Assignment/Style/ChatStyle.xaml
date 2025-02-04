@@ -20,7 +20,7 @@
                                     Content="{Binding Username, FallbackValue='(unknown user)'}"
                                     FontSize="11"
                                     FontWeight="SemiBold"
-                                    Foreground="{Binding UsernameColor, FallbackValue=Unknown}" />
+                                    Foreground="{Binding UsernameColor, TargetNullValue='#000000', FallbackValue='Black'}" />
                                 <Label
                                     VerticalAlignment="Center"
                                     Content="{Binding Time, StringFormat='hh:mm tt', FallbackValue='No Time'}"
