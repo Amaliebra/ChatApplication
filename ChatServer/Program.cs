@@ -1,4 +1,5 @@
 ﻿
+using ChatServer.Net;
 using ChatServer.Net.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -6,17 +7,16 @@ using System.Net.Sockets;
 public class Program
 {
     private TcpListener _server;
-    private List<TcpClient> _clients;
+    private List<Client> _clients = new List<Client>();
 
     public Program(string ip, int port)
     {
         _server = new TcpListener(IPAddress.Any, port);
-        _clients = new List<TcpClient>();
     }
 
     public static async Task Main(string[] args)
     {
-        var program = new Program("127.0.0.1", 5000);
+        var program = new Program("192.168.0.20", 5000);
         await program.StartAsync();
     }
 
@@ -28,62 +28,99 @@ public class Program
         while (true)
         {
             Console.WriteLine("Waiting for a client...");
-            var client = await _server.AcceptTcpClientAsync();
+            var tcpClient = await _server.AcceptTcpClientAsync();
 
-            // Prevent duplicate clients (check if they are already connected)
-            if (_clients.Any(c => ((IPEndPoint)c.Client.RemoteEndPoint).Address.Equals(((IPEndPoint)client.Client.RemoteEndPoint).Address)))
+
+            if (_clients.Any(c => ((IPEndPoint)c.ClientSocket.Client.RemoteEndPoint).Address.Equals(
+                                   ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address)))
             {
                 Console.WriteLine("Duplicate client detected, rejecting connection.");
-                client.Close();
+                tcpClient.Close();
                 continue;
             }
 
-            _clients.Add(client);
-            Console.WriteLine($"Client connected: {((IPEndPoint)client.Client.RemoteEndPoint).Address}");
+            var clientWrapper = new Client(tcpClient);
+            clientWrapper.DirectMessageReceived += HandleDirectMessage;
+            clientWrapper.Disconnected += HandleClientDisconnected;
+            _clients.Add(clientWrapper);
+            Console.WriteLine($"Client connected: {((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address}");
+            await BroadcastUser();
 
-            _ = Task.Run(() => HandleClientAsync(client));
         }
     }
 
-    private async Task HandleClientAsync(TcpClient client)
+    
+    private void HandleDirectMessage(Client sender, string recipient, string messageText)
     {
-        try
+        Console.WriteLine($"Direct message from {sender.Username} to {recipient}: {messageText}");
+
+        var targetClient = _clients.FirstOrDefault(c => c.Username == recipient && c.ClientSocket.Connected);
+
+        if (targetClient != null)
         {
-            using var networkStream = client.GetStream();
-            var packetReader = new PacketReader(networkStream);
-            Console.WriteLine("Handling client...");
 
-            Console.WriteLine($"Client connected: {client.Client.RemoteEndPoint}");
+            var forwardPacket = new PacketBuilder();
+            forwardPacket.WriteOpCode(5);
 
-            _clients.Add(client);
-            while (true)
+            forwardPacket.WriteString(sender.Username);
+            forwardPacket.WriteString(messageText);
+            var packetBytes = forwardPacket.GetPacketBytes();
+
+            try
             {
-                Console.WriteLine("Waiting for client data...");
-                var opCode = await packetReader.ReadOpcodeAsync();
-                Console.WriteLine($"Opcode received: {opCode}");
-                var message = await packetReader.ReadStringAsync();
-                Console.WriteLine($"Received message: {message}");
-
-                foreach (var connectedClient in _clients)
+                if (targetClient.ClientSocket.Connected)
                 {
-                    var stream = connectedClient.GetStream();
-                    var packetBuilder = new PacketBuilder();
-                    packetBuilder.WriteOpCode(opCode);
-                    packetBuilder.WriteString(message);
-                    var packetBytes = packetBuilder.GetPacketBytes();
-                    await stream.WriteAsync(packetBytes, 0, packetBytes.Length);
+                    targetClient.ClientSocket.GetStream().WriteAsync(packetBytes, 0, packetBytes.Length);
+                }
+                else
+                {
+                    Console.WriteLine($"Client {targetClient.Username} is disconnected.");
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending message to {targetClient.Username}: {ex.Message}");
+            }
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            Console.WriteLine($"Recipient {recipient} not found.");
         }
-        finally
+    }
+
+    private async void HandleClientDisconnected(Client client)
+    {
+        Console.WriteLine($"{client.Username} disconnected.");
+        _clients.Remove(client);
+        await BroadcastUser();
+    }
+
+    private async Task BroadcastUser()
+    {
+        var userList = _clients
+            .Select(c => c.Username?.Trim()) //MIGHT NEED TO REMOVE THIS-------------------------------------------------
+            .Where(u => !string.IsNullOrEmpty(u))
+            .ToList();
+
+        string UserListString = string.Join(",", userList);
+        System.Diagnostics.Debug.WriteLine($"[DEBUG] Sending user list: {UserListString}");
+
+        var packetBuilder = new PacketBuilder();
+        packetBuilder.WriteOpCode(2);
+        packetBuilder.WriteString(UserListString);
+        byte[] packetBytes = packetBuilder.GetPacketBytes();
+
+        foreach (var client in _clients)
         {
-            Console.WriteLine("Removing client from server");
-            _clients.RemoveAll(c => c == client);
-            client.Close();
+            try
+            {
+                await client.ClientSocket.GetStream().WriteAsync(packetBytes, 0, packetBytes.Length);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending user list to {client.Username}: {ex.Message}");
+            }
         }
     }
 }
+

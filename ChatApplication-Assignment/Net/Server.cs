@@ -1,8 +1,12 @@
 ﻿using ChatClient.Net.IO;
+using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Net;
+using System.Threading.Tasks;
+using System.Text;
 using ChatClient.MVVM.Model;
 using ChatClient.MVVM.ViewModel;
-using ChatClient.Net;
 
 namespace ChatClient.Net
 {
@@ -10,7 +14,7 @@ namespace ChatClient.Net
     {
         private TcpClient _client;
         public PacketReader PacketReader { get; private set; }
-        public event Func<Task> ConnectedEvent; /// FIX THISS REMINDERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+        public event Func<Task> ConnectedEvent;
         public event Action<string> MessageReceivedEvent;
         public event Action DisconnectedEvent;
         public event Action<List<string>> UserListUpdatedEvent;
@@ -32,21 +36,26 @@ namespace ChatClient.Net
                     }
 
                     _client = new TcpClient();
-                    await _client.ConnectAsync("127.0.0.1", 5000);
+                    await _client.ConnectAsync("192.168.0.20", 5000);
                     PacketReader = new PacketReader(_client.GetStream());
+
+                    _ = Task.Run(() => ReadPacketAsync());
 
                     await Task.Delay(200);
 
                     Console.WriteLine($"Transmitting username: {username}");
                     var packetBuilder = new PacketBuilder();
-                    packetBuilder.WriteOpCode(0); 
+                    packetBuilder.WriteOpCode(1);
                     packetBuilder.WriteString(username);
                     await _client.GetStream().WriteAsync(packetBuilder.GetPacketBytes());
+
                     if (!_connectedUsers.Contains(username))
                     {
                         _connectedUsers.Add(username);
                         UserListUpdatedEvent?.Invoke(new List<string>(_connectedUsers));
                     }
+
+                    return;
                 }
                 catch (Exception ex)
                 {
@@ -70,10 +79,17 @@ namespace ChatClient.Net
                             if (ConnectedEvent != null)
                                 await ConnectedEvent.Invoke();
                             break;
+                        case 2:
+                            var userListStr = await PacketReader.ReadStringAsync();
+                            var users = userListStr.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                                   .ToList();
+                            UserListUpdatedEvent?.Invoke(users);
+                            break;
                         case 5:
-                            var message = await PacketReader.ReadStringAsync();
-                            Console.WriteLine($"[{DateTime.Now}] {message}");
-                            MessageReceivedEvent?.Invoke(message);
+                            var senderUsername = await PacketReader.ReadStringAsync();
+                            var messageText = await PacketReader.ReadStringAsync();
+                            Console.WriteLine($"[{DateTime.Now}] {messageText}");
+                            MessageReceivedEvent?.Invoke($"{senderUsername}: {messageText}");
                             break;
                         case 10:
                             DisconnectedEvent?.Invoke();
@@ -89,12 +105,11 @@ namespace ChatClient.Net
                 Console.WriteLine($"Error reading packet: {ex.Message}");
                 DisconnectedEvent?.Invoke();
             }
-
         }
 
-        public async Task SendMessageAsync(string message)
+        public async Task SendMessageAsync(byte[] data)
         {
-            if (string.IsNullOrWhiteSpace(message))
+            if (data == null || data.Length == 0)
             {
                 return;
             }
@@ -105,15 +120,11 @@ namespace ChatClient.Net
                 return;
             }
 
-            var messagePacket = new PacketBuilder();
-            messagePacket.WriteOpCode(5);
-            messagePacket.WriteString(message);
-
             try
             {
-                await _client.Client.SendAsync(messagePacket.GetPacketBytes(), SocketFlags.None);
+                await _client.Client.SendAsync(data, SocketFlags.None);
             }
-            catch(SocketException ex)
+            catch (SocketException ex)
             {
                 Console.WriteLine(ex.SocketErrorCode);
             }
@@ -122,7 +133,6 @@ namespace ChatClient.Net
                 Console.WriteLine($"Error sending message: {ex.Message}");
                 DisconnectedEvent?.Invoke();
             }
-            
         }
     }
 }

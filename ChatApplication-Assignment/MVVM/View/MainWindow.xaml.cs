@@ -70,14 +70,12 @@ public partial class MainWindow : Window
 
     private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (DataContext is MainViewModel viewModel && viewModel.SelectedContact != null)
+        if (DataContext is MainViewModel viewModel)
         {
-            var messages = viewModel.SelectedContact.Messages;
-
-            for (int i = 0; i < messages.Count; i++)
+            if (e.AddedItems.Count > 0)
             {
-                messages[i].FirstMessage = (i == 0);
-                messages[i].LastMessage = (i == messages.Count - 1);
+                viewModel.SelectedContact = e.AddedItems[0] as ContactModel;
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] SelectedContact set to: {viewModel.SelectedContact?.Username}");
             }
         }
     }

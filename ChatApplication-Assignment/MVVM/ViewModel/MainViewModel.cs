@@ -3,6 +3,7 @@ using ChatClient.MVVM.Core;
 using ChatClient.Net;
 using System.Collections.ObjectModel;
 using System.Windows;
+using ChatClient.Net.IO;
 
 namespace ChatClient.MVVM.ViewModel
 {
@@ -14,9 +15,20 @@ namespace ChatClient.MVVM.ViewModel
         public ObservableCollection<MessageModel> Messages { get; private set; }
         public RelayCommand SendMessageCommand { get; set; }
         public RelayCommand ServerConnectCommand { get; set; }
-        public string UsernameColor { get; set; } = "#56C54C";
         public string Username { get; set; }
 
+        private string _defaultColor = "#8a6130";
+        private string _ownColor = "#56C54C";
+
+        public string UsernameColor
+        {
+            get
+            {
+                if (SelectedContact == null) return _defaultColor;
+
+                return (SelectedContact.Username == Username) ? _ownColor : _defaultColor;
+            }
+        }
 
         private ContactModel _selectedContact;
 
@@ -33,6 +45,7 @@ namespace ChatClient.MVVM.ViewModel
                 _selectedContact = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(SelectedContact.Messages));
+                OnPropertyChanged(nameof(UsernameColor)); 
             }
         }
         public string Message
@@ -45,7 +58,6 @@ namespace ChatClient.MVVM.ViewModel
             }
         }
 
-        public MainViewModel() : this("DefaultUser") { }
         public MainViewModel(string username)
         {
             System.Diagnostics.Debug.WriteLine("MainViewModel called");
@@ -55,29 +67,9 @@ namespace ChatClient.MVVM.ViewModel
             Contacts = new ObservableCollection<ContactModel>();
             Messages = new ObservableCollection<MessageModel>();
 
-            SendMessageCommand = new RelayCommand(
-                async o =>
-                {
-                    if (!string.IsNullOrWhiteSpace(Message))
-                    {
-                        await _server.SendMessageAsync(Message);
-                        Messages.Add(new MessageModel
-                        {
-                            Username = Username,
-                            Message = Message,
-                            Time = DateTime.Now,
-                            IsOwnMessage = true
-                        });
-                        Message = string.Empty;
-                    }
-                },
-                o => !string.IsNullOrWhiteSpace(Message));
-
             _server.ConnectedEvent += UserConnected;
             _server.UserListUpdatedEvent += OnUserListUpdated;
             _server.ConnectToServerAsync(Username);
-
-
 
             InitializeCommands();
             SubscribeToServerEvents();
@@ -109,22 +101,57 @@ namespace ChatClient.MVVM.ViewModel
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] User list updated. Previous SelectedContact: {SelectedContact?.Username ?? "NULL"}");
+
+                if(!userList.Contains(Username))
+                {
+                    userList.Add(Username);
+                }
+
+                var PreviousContact = SelectedContact?.Username;
+                var ExistingContacts = Contacts.ToDictionary(c => c.Username);
+
                 Users.Clear();
                 Contacts.Clear();
 
                 foreach (var user in userList)
                 {
-                    var newUser = new UserModel { Username = user };
-
-                    Users.Add(newUser);
-                    Contacts.Add(new ContactModel
+                    if (ExistingContacts.TryGetValue(user, out var ExistingContact))
                     {
-                        Username = user,
-                        Messages = new ObservableCollection<MessageModel>(),
-                    });
+                        Contacts.Add(ExistingContact);
+                    }
+                    else
+                    {
+                        Contacts.Add(new ContactModel
+                        {
+                            Username = user,
+                            Messages = new ObservableCollection<MessageModel>(),
+                        });
+                    }
+                }
+
+                SelectedContact = Contacts.FirstOrDefault(c => c.Username == PreviousContact);
+
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] After update, SelectedContact: {SelectedContact?.Username ?? "NULL"}");
+
+                if (SelectedContact == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("[WARNING] SelectedContact was lost after user list update!");
                 }
             });
         }
+
+        //private void OnUserListUpdated(List<string> userList)
+        //{
+        //    Application.Current.Dispatcher.Invoke(() =>
+        //    {
+        //        foreach (var contact in Contacts)
+        //        {
+        //            contact.IsOnline = userList.Contains(contact.Username);
+        //        }
+        //    });
+        //}
+
 
         private void SubscribeToServerEvents()
         {
@@ -160,24 +187,35 @@ namespace ChatClient.MVVM.ViewModel
             SendMessageCommand = new RelayCommand(
                 async o =>
                 {
+                    System.Diagnostics.Debug.WriteLine($"[DEBUG] Sending message. SelectedContact: {SelectedContact?.Username ?? "NULL"}");
+
                     if (!string.IsNullOrWhiteSpace(Message) && SelectedContact != null)
                     {
-                        var newMessage = new MessageModel
+                        var packetBuilder = new PacketBuilder();
+                        packetBuilder.WriteOpCode(5);
+                        packetBuilder.WriteString(SelectedContact.Username);
+                        packetBuilder.WriteString(Message);
+
+                        await _server.SendMessageAsync(packetBuilder.GetPacketBytes());
+
+                        SelectedContact.Messages.Add(new MessageModel
                         {
-                            Username = Username, 
+                            Username = Username,
                             Message = Message,
                             Time = DateTime.Now,
                             IsOwnMessage = true
-                        };
+                        });
 
-                        System.Diagnostics.Debug.WriteLine($"Sending Message: {newMessage.Username} at {newMessage.Time} - {newMessage.Message}");
-
-                        SelectedContact.Messages.Add(newMessage);
-                        await _server.SendMessageAsync(Message);
                         Message = string.Empty;
+
+                        System.Diagnostics.Debug.WriteLine($"[DEBUG] Message sent. SelectedContact: {SelectedContact?.Username ?? "NULL"}");
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[ERROR] Cannot send message. SelectedContact: {SelectedContact?.Username ?? "NULL"}");
                     }
                 },
-                o => !string.IsNullOrWhiteSpace(Message));
+                o => !string.IsNullOrWhiteSpace(Message) && SelectedContact != null);
 
         }
 
