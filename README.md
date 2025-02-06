@@ -8,12 +8,16 @@ Here are some of the functions im "planning" to include, depending on how smooth
 - encryption (end to end? Api possibly. Probably wont focus on this).
 - try to use it off of local internet.(probably not going to happen within the deadline)
 - ~~Direct message instead of broadcasting to all clients~~ :white_check_mark: <br>
+- displaying lastmessage, firstmessage and isownmessage correctly, with colors and bubbles.
+
 
 ### Challanges with the project
 - I wanted to use async. I had heard async would work better with multiple clients. And it was a real challenge going from what i used in my previous project. Changing everything just to try to get the async to work.
 - I had difficulties finding the source of the issues i had, as it was hard debugging.
+- A bunch of the issues was caused entirely by xaml, which was unexpected, and it took me to long to figure out.
 
 <br>
+<img src="ChatApplication-Assignment/Resources/LoginWindow.png" width="500"/>
 <img src="ChatApplication-Assignment/Resources/First-gui-screenshot.png" width="500"/>
 Early on in the project, i made this design in xaml. But i soon realized that some of the pieces i used, didnt have the nessecary presets or settings that i needed to link the design with the backend part.<br>
 <img src="ChatApplication-Assignment/Resources/excalidraw-diagram.png" width="500"/> <br>
