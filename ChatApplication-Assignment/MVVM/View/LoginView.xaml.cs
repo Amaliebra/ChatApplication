@@ -57,12 +57,5 @@ namespace ChatClient.MVVM.View
         {
             Application.Current.Shutdown();
         }
-
-        private void BtnLogin_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
-            this.Close();
-        }
     }
 }

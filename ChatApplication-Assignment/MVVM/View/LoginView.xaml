@@ -131,7 +131,6 @@
                     Margin="0,15,0,0"
                     Background="#56C54C"
                     BorderBrush="Transparent"
-                    Click="BtnLogin_Click"
                     Command="{Binding LoginCommand}"
                     Content="Log In"
                     FontSize="12"

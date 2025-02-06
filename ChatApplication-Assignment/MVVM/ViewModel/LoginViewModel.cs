@@ -40,43 +40,12 @@ namespace ChatClient.MVVM.ViewModel
 
             LoginCommand = new RelayCommand(o =>
             {
-                System.Diagnostics.Debug.WriteLine($"Attempting login as {Username}");
-                var mainWindow = new MainWindow
+                System.Diagnostics.Debug.WriteLine($"Attempting login as {Username}"); //fFIX THIS -CAUSES 2 WINDOWS TO OPEN
+                var mainWindow = new MainWindow()
                 {
                     DataContext = new MainViewModel(Username)
                 };
                 Application.Current.MainWindow = mainWindow;
-                mainWindow.Show();
-
-                foreach (Window window in Application.Current.Windows)
-                {
-                    if (window is LoginView)
-                    {
-                        window.Close();
-                        break;
-                    }
-                }
-            });
-
-        }
-        private void Login()
-        {
-            System.Diagnostics.Debug.WriteLine($"Attempting login as {Username}");
-
-            if (Application.Current.Windows.OfType<MainWindow>().Any())
-            {
-                System.Diagnostics.Debug.WriteLine("MainView open, skipping instance");
-                return;
-            }
-
-            var mainViewModel = new MainViewModel(Username);
-
-            var mainWindow = new MainWindow { DataContext = mainViewModel };
-
-            mainViewModel.InitializeConnection();
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
                 mainWindow.Show();
 
                 foreach (Window window in Application.Current.Windows)
