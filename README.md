@@ -3,10 +3,11 @@ This is a assignment project. I decided to make a chatapp with a client and a se
 A few months ago, i made a similar app. So i wanted to expand on my knowledge and add better functions to this version.
 Here are some of the functions im "planning" to include, depending on how smooth the process will be:
 - Sounds based on events.
-- Additional view (Maybe a small window of some sort. Hopefully)
-- Some form of way to handle username. Either given at random(placeholder) or type in username, with no requirements(Also placeholder with no saving)
+- ~~Additional view (Maybe a small window of some sort. Hopefully)~~ :white_check_mark:
+- ~~Some form of way to handle username. Either given at random(placeholder) or type in username, with no requirements(Also placeholder with no saving)~~ :white_check_mark:
 - encryption (end to end? Api possibly. Probably wont focus on this).
-- try to use it off local internet.(probably not going to happen within the deadline) <br>
+- try to use it off of local internet.(probably not going to happen within the deadline)
+- ~~Direct message instead of broadcasting to all clients~~ :white_check_mark: <br>
 
 ### Challanges with the project
 - I wanted to use async. I had heard async would work better with multiple clients. And it was a real challenge going from what i used in my previous project. Changing everything just to try to get the async to work.
