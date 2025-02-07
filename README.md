@@ -23,12 +23,19 @@ Early on in the project, i made this design in xaml. But i soon realized that so
 <img src="ChatApplication-Assignment/Resources/excalidraw-diagram.png" width="500"/> <br>
 I made this diagram before starting the project, to show a rough idea of the function of the app.
 
-### Resources made by someone else: 
+### What the app does at its current stage:
+When you launch the app, both the server (with a console) and the client start. The client initially opens the **LoginWindow**, which currently serves as a placeholder but generates a random "cringy" username on launch. Pressing the login button closes the **LoginWindow** and opens the **MainWindow**, where the client attempts to connect to the server.  
+Currently, the only indication of a successful connection from the client side is seeing your own username in the contacts list (used as a placeholder for testing). The server is hardcoded to run on a specific IP (placeholder), but other computers on the same network can connect and will be able to see each other in the contacts list.
+## Features
+- Custom scrollbar.
+- Custom minimize, maximize and exit buttons and windowbar.
+- Asynchronous socket handling.
+- Real-time messaging.
+- Opcode based communication.
+- Big portion of the styling is done through resource dictionaries.
 
-#### Pictures from Unsplash
-[`profile1`](https://unsplash.com/photos/a-man-in-a-white-tank-top-and-a-yellow-towel-on-his-head-JhqGVkxR1pA),
-[`profile2`](https://unsplash.com/photos/a-woman-in-a-black-jacket-standing-in-the-dark-JS8diHy9Ntc),
-[`profile3`](https://unsplash.com/photos/a-man-sitting-on-a-chair-playing-a-guitar--ZXIaqsEnJM).
+
+### Resources made by someone else: 
 
 #### Icons from Flaticon
 <div> Icons made by <a href="https://www.flaticon.com/authors/those-icons" title="Those Icons"> Those Icons </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>
