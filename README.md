@@ -2,13 +2,14 @@
 This is a assignment project. I decided to make a chatapp with a client and a server. The gui is made in wpf.
 A few months ago, i made a similar app. So i wanted to expand on my knowledge and add better functions to this version.
 Here are some of the functions im "planning" to include, depending on how smooth the process will be:
-- Sounds based on events.
+- Sounds based on events(receiving a message, login).
 - ~~Additional view (Maybe a small window of some sort. Hopefully)~~ :white_check_mark:
 - ~~Some form of way to handle username. Either given at random(placeholder) or type in username, with no requirements(Also placeholder with no saving)~~ :white_check_mark:
-- encryption (end to end? Api possibly. Probably wont focus on this).
+- encryption (end to end? Api possibly. Low priority).
 - try to use it off of local internet.(probably not going to happen within the deadline)
 - ~~Direct message instead of broadcasting to all clients~~ :white_check_mark: <br>
 - displaying `LastMessage`, `FirstMessage` and `IsOwnMessage` correctly, with colors and bubbles.
+- have the server use a none hardcoded ip.
 
 ### Challanges with the project
 - I wanted to use async. I had heard async would work better with multiple clients. And it was a real challenge going from what i used in my previous project. Changing everything just to try to get the async to work.
@@ -31,9 +32,10 @@ Currently, the only indication of a successful connection from the client side i
 - Custom minimize, maximize and exit buttons and windowbar.
 - Asynchronous socket handling.
 - Real-time messaging.
+- Dynamically updates connected users.
 - Opcode based communication.
 - Big portion of the styling is done through resource dictionaries.
-
+- Logic and ui is separated.
 
 ### Resources made by someone else: 
 <div> Icons made by <a href="https://www.flaticon.com/authors/those-icons" title="Those Icons"> Those Icons </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>
