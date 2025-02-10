@@ -103,10 +103,10 @@ namespace ChatClient.MVVM.ViewModel
             {
                 System.Diagnostics.Debug.WriteLine($"[DEBUG] User list updated. Previous SelectedContact: {SelectedContact?.Username ?? "NULL"}");
 
-                if(!userList.Contains(Username))
-                {
-                    userList.Add(Username);
-                }
+                //if(!userList.Contains(Username))
+                //{
+                //    userList.Add(Username);
+                //}
 
                 var PreviousContact = SelectedContact?.Username;
                 var ExistingContacts = Contacts.ToDictionary(c => c.Username);

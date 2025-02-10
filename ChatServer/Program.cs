@@ -16,7 +16,7 @@ public class Program
 
     public static async Task Main(string[] args)
     {
-        var program = new Program("192.168.0.20", 5000);
+        var program = new Program("172.16.17.197", 5000);
         await program.StartAsync();
     }
 
@@ -31,21 +31,29 @@ public class Program
             var tcpClient = await _server.AcceptTcpClientAsync();
 
 
-            if (_clients.Any(c => ((IPEndPoint)c.ClientSocket.Client.RemoteEndPoint).Address.Equals(
-                                   ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address)))
-            {
-                Console.WriteLine("Duplicate client detected, rejecting connection.");
-                tcpClient.Close();
-                continue;
-            }
+            //if (_clients.Any(c => ((IPEndPoint)c.ClientSocket.Client.RemoteEndPoint).Address.Equals( 
+            //                       ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address)))
+            //{
+            //    Console.WriteLine("Duplicate client detected, rejecting connection.");
+            //    tcpClient.Close();
+            //    continue;
+            //}
 
+
+            //need to uncomment this after testing
             var clientWrapper = new Client(tcpClient);
             clientWrapper.DirectMessageReceived += HandleDirectMessage;
             clientWrapper.Disconnected += HandleClientDisconnected;
-            _clients.Add(clientWrapper);
-            Console.WriteLine($"Client connected: {((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address}");
-            await BroadcastUser();
 
+            Console.WriteLine("Adding clients to _clients list");
+            _clients.Add(clientWrapper);
+            Console.WriteLine($"Client added. Total clients: {_clients.Count}");
+
+            Console.WriteLine("Before broadcast");
+            await BroadcastUser();
+            Console.WriteLine("User list broadcast completed");
+
+            Console.WriteLine($"Client connected: {((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address}");
         }
     }
 
