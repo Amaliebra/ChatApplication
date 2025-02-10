@@ -14,11 +14,11 @@ Here are some of the functions im "planning" to include, depending on how smooth
 ### Challanges with the project
 - I wanted to use async. I had heard async would work better with multiple clients. And it was a real challenge going from what i used in my previous project. Changing everything just to try to get the async to work.
 - I had difficulties finding the source of the issues i had, as it was hard debugging.
-- A bunch of the issues was caused entirely by xaml, which was unexpected, and it took me to long to figure out.
+- A bunch of the issues was caused entirely by xaml, which was unexpected, and it took me too long to figure out.
 
 <br>
 <img src="ChatApplication-Assignment/Resources/LoginWindow.png" width="500"/>
-Latest look of the `MainWindow`
+Latest look of the `MainWindow`.
 <img src="ChatApplication-Assignment/Resources/First-gui-screenshot.png" width="500"/>
 Early on in the project, i made this design in xaml. But i soon realized that some of the pieces i used, didnt have the nessecary presets or settings that i needed to link the design with the backend part.<br>
 <img src="ChatApplication-Assignment/Resources/excalidraw-diagram.png" width="500"/> <br>
@@ -36,6 +36,7 @@ Currently, the only indication of a successful connection from the client side i
 - Opcode based communication.
 - Big portion of the styling is done through resource dictionaries.
 - Logic and ui is separated.
+- Can be used over LAN, no internet required.
 
 ### Resources made by someone else: 
 <div> Icons made by <a href="https://www.flaticon.com/authors/those-icons" title="Those Icons"> Those Icons </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>
