@@ -29,7 +29,7 @@ When you launch the app, both the server (with a console) and the client start. 
 Currently, the only indication of a successful connection from the client side is seeing your own username in the contacts list (used as a placeholder for testing). The server is hardcoded to run on a specific IP (placeholder), but other computers on the same network can connect and will be able to see each other in the contacts list.
 ## Features
 - Custom scrollbar.
-- Custom minimize, maximize and exit buttons and windowbar.
+- Custom minimize, maximize and exit buttons and windowbar with name and logo.
 - Asynchronous socket handling.
 - Real-time messaging.
 - Dynamically updates connected users.
