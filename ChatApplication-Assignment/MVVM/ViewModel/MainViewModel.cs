@@ -101,6 +101,7 @@ namespace ChatClient.MVVM.ViewModel
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] OnUserListUpdated CALLED!");
                 System.Diagnostics.Debug.WriteLine($"[DEBUG] User list updated. Previous SelectedContact: {SelectedContact?.Username ?? "NULL"}");
 
                 //if(!userList.Contains(Username))
@@ -108,36 +109,46 @@ namespace ChatClient.MVVM.ViewModel
                 //    userList.Add(Username);
                 //}
 
-                var PreviousContact = SelectedContact?.Username;
-                var ExistingContacts = Contacts.ToDictionary(c => c.Username);
+                //var PreviousContact = SelectedContact?.Username;
+                //var ExistingContacts = Contacts.ToDictionary(c => c.Username);
+                var ExistingUsernames = Contacts.Select(c => c.Username).ToList();
 
-                Users.Clear();
-                Contacts.Clear();
+                //Users.Clear(); //check if this removes the user list
+                //Contacts.Clear();
 
                 foreach (var user in userList)
                 {
-                    if (ExistingContacts.TryGetValue(user, out var ExistingContact))
+                    if (!ExistingUsernames.Contains(user))
                     {
-                        Contacts.Add(ExistingContact);
+                        Console.WriteLine();
                     }
-                    else
-                    {
+
                         Contacts.Add(new ContactModel
                         {
                             Username = user,
                             Messages = new ObservableCollection<MessageModel>(),
                         });
+
+                }
+                var PreviousContact = SelectedContact?.Username;
+
+                //SelectedContact = Contacts.FirstOrDefault(c => c.Username == PreviousContact);
+
+                //System.Diagnostics.Debug.WriteLine($"[DEBUG] After update, SelectedContact: {SelectedContact?.Username ?? "NULL"}");
+
+                if (PreviousContact != null)
+                {
+                    SelectedContact = Contacts.FirstOrDefault(c => c.Username == PreviousContact);
+                    if (SelectedContact == null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("[WARNING] SelectedContact was lost after user list update, even with update logic!");
                     }
                 }
-
-                SelectedContact = Contacts.FirstOrDefault(c => c.Username == PreviousContact);
-
+                //if (SelectedContact == null)
+                //{
+                //    System.Diagnostics.Debug.WriteLine("[WARNING] SelectedContact was lost after user list update!");
+                //}
                 System.Diagnostics.Debug.WriteLine($"[DEBUG] After update, SelectedContact: {SelectedContact?.Username ?? "NULL"}");
-
-                if (SelectedContact == null)
-                {
-                    System.Diagnostics.Debug.WriteLine("[WARNING] SelectedContact was lost after user list update!");
-                }
             });
         }
 

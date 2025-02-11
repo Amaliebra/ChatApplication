@@ -112,6 +112,7 @@ public class Program
 
         string UserListString = string.Join(",", userList);
         System.Diagnostics.Debug.WriteLine($"[DEBUG] Sending user list: {UserListString}");
+        Console.WriteLine($"[DEBUG] Broadcasting user list: {UserListString}");
 
         var packetBuilder = new PacketBuilder();
         packetBuilder.WriteOpCode(2);
