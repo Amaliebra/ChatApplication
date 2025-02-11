@@ -102,7 +102,7 @@ namespace ChatClient.MVVM.ViewModel
             Application.Current.Dispatcher.Invoke(() =>
             {
                 System.Diagnostics.Debug.WriteLine($"[DEBUG] OnUserListUpdated CALLED!");
-                System.Diagnostics.Debug.WriteLine($"[DEBUG] User list updated. Previous SelectedContact: {SelectedContact?.Username ?? "NULL"}");
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] User list updated. Previous Contacts.Count: {Contacts.Count}");
 
                 //if(!userList.Contains(Username))
                 //{
@@ -111,24 +111,20 @@ namespace ChatClient.MVVM.ViewModel
 
                 //var PreviousContact = SelectedContact?.Username;
                 //var ExistingContacts = Contacts.ToDictionary(c => c.Username);
-                var ExistingUsernames = Contacts.Select(c => c.Username).ToList();
+                //var ExistingUsernames = Contacts.Select(c => c.Username).ToList();
 
                 //Users.Clear(); //check if this removes the user list
                 //Contacts.Clear();
 
+                var newContacts = new ObservableCollection<ContactModel>();
                 foreach (var user in userList)
                 {
-                    if (!ExistingUsernames.Contains(user))
+                    System.Diagnostics.Debug.WriteLine($"[DEBUG] Adding contact to NEW collection: {user}");
+                    newContacts.Add(new ContactModel
                     {
-                        Console.WriteLine();
-                    }
-
-                        Contacts.Add(new ContactModel
-                        {
-                            Username = user,
-                            Messages = new ObservableCollection<MessageModel>(),
-                        });
-
+                        Username = user,
+                        Messages = new ObservableCollection<MessageModel>(),
+                    });
                 }
                 var PreviousContact = SelectedContact?.Username;
 
@@ -148,7 +144,10 @@ namespace ChatClient.MVVM.ViewModel
                 //{
                 //    System.Diagnostics.Debug.WriteLine("[WARNING] SelectedContact was lost after user list update!");
                 //}
-                System.Diagnostics.Debug.WriteLine($"[DEBUG] After update, SelectedContact: {SelectedContact?.Username ?? "NULL"}");
+
+                Contacts = newContacts;
+                OnPropertyChanged(nameof(Contacts));
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] After update, Contacts.Count: {Contacts.Count}");
             });
         }
 
