@@ -31,6 +31,7 @@ Currently, the only indication of a successful connection from the client side i
 ## Features
 - Custom scrollbar.
 - Custom minimize, maximize and exit buttons and windowbar with name and logo.
+- Reasizable window, with dragging function.
 - Asynchronous socket handling.
 - Real-time messaging.
 - Dynamically updates connected users.
