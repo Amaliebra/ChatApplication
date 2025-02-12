@@ -34,9 +34,9 @@ namespace ChatClient.Net
                         Console.WriteLine("Already connected to the server.");
                         return;
                     }
-
+                    //172.16.17.197 - 192.168.0.20
                     _client = new TcpClient();
-                    await _client.ConnectAsync("172.16.17.197", 5000);
+                    await _client.ConnectAsync("192.168.0.20", 5000);
                     PacketReader = new PacketReader(_client.GetStream());
 
                     _ = Task.Run(() => ReadPacketAsync());

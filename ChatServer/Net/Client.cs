@@ -16,6 +16,7 @@ namespace ChatServer.Net
 
         public event Action<Client, string, string> DirectMessageReceived;
         public event Action<Client> Disconnected;
+        public Task InitializationTask { get; private set; }
 
         public Client(TcpClient client)
         {
@@ -23,7 +24,7 @@ namespace ChatServer.Net
             UID = Guid.NewGuid();
             _packetReader = new PacketReader(ClientSocket.GetStream());
 
-            InitializeAsync().ContinueWith(initTask =>
+            InitializationTask = InitializeAsync().ContinueWith(initTask =>
             {
                 if (initTask.Status == TaskStatus.RanToCompletion)
                 {
