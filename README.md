@@ -19,7 +19,7 @@ Here are some of the functions im "planning" to include, depending on how smooth
 
 <br>
 <img src="ChatApplication-Assignment/Resources/LoginWindow.png" width="500"/>
-Latest look of the `MainWindow`.
+Latest look of the `LoginWindow` and the placeholder usernames.
 <img src="ChatApplication-Assignment/Resources/First-gui-screenshot.png" width="500"/>
 Early on in the project, i made this design in xaml. But i soon realized that some of the pieces i used, didnt have the nessecary presets or settings that i needed to link the design with the backend part.<br>
 <img src="ChatApplication-Assignment/Resources/excalidraw-diagram.png" width="500"/> <br>
