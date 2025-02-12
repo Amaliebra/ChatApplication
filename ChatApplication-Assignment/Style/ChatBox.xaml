@@ -10,14 +10,14 @@
                     <Border Background="#ffffff" CornerRadius="8">
                         <Grid>
                             <TextBox
-                                x:Name="ChatBox"
+                                x:Name="InputTextBox"
                                 Margin="8,0,0,0"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 VerticalContentAlignment="Center"
                                 Background="Transparent"
                                 BorderThickness="0"
-                                CaretBrush="Purple"
+                                CaretBrush="#56C54C"
                                 Foreground="#FF2F2E2E"
                                 Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <TextBox.InputBindings>

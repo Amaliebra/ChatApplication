@@ -101,43 +101,53 @@ namespace ChatClient.MVVM.ViewModel
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                System.Diagnostics.Debug.WriteLine($"[DEBUG] User list updated. Previous SelectedContact: {SelectedContact?.Username ?? "NULL"}");
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] OnUserListUpdated CALLED!");
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] User list updated. Previous Contacts.Count: {Contacts.Count}");
 
-                if(!userList.Contains(Username))
-                {
-                    userList.Add(Username);
-                }
+                //if(!userList.Contains(Username))
+                //{
+                //    userList.Add(Username);
+                //}
 
-                var PreviousContact = SelectedContact?.Username;
-                var ExistingContacts = Contacts.ToDictionary(c => c.Username);
+                //var PreviousContact = SelectedContact?.Username;
+                //var ExistingContacts = Contacts.ToDictionary(c => c.Username);
+                //var ExistingUsernames = Contacts.Select(c => c.Username).ToList();
 
-                Users.Clear();
-                Contacts.Clear();
+                //Users.Clear(); //check if this removes the user list
+                //Contacts.Clear();
 
+                var newContacts = new ObservableCollection<ContactModel>();
                 foreach (var user in userList)
                 {
-                    if (ExistingContacts.TryGetValue(user, out var ExistingContact))
+                    System.Diagnostics.Debug.WriteLine($"[DEBUG] Adding contact to NEW collection: {user}");
+                    newContacts.Add(new ContactModel
                     {
-                        Contacts.Add(ExistingContact);
-                    }
-                    else
-                    {
-                        Contacts.Add(new ContactModel
-                        {
-                            Username = user,
-                            Messages = new ObservableCollection<MessageModel>(),
-                        });
-                    }
+                        Username = user,
+                        Messages = new ObservableCollection<MessageModel>(),
+                    });
                 }
+                var PreviousContact = SelectedContact?.Username;
 
-                SelectedContact = Contacts.FirstOrDefault(c => c.Username == PreviousContact);
+                //SelectedContact = Contacts.FirstOrDefault(c => c.Username == PreviousContact);
 
-                System.Diagnostics.Debug.WriteLine($"[DEBUG] After update, SelectedContact: {SelectedContact?.Username ?? "NULL"}");
+                //System.Diagnostics.Debug.WriteLine($"[DEBUG] After update, SelectedContact: {SelectedContact?.Username ?? "NULL"}");
 
-                if (SelectedContact == null)
+                if (PreviousContact != null)
                 {
-                    System.Diagnostics.Debug.WriteLine("[WARNING] SelectedContact was lost after user list update!");
+                    SelectedContact = Contacts.FirstOrDefault(c => c.Username == PreviousContact);
+                    if (SelectedContact == null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("[WARNING] SelectedContact was lost after user list update, even with update logic!");
+                    }
                 }
+                //if (SelectedContact == null)
+                //{
+                //    System.Diagnostics.Debug.WriteLine("[WARNING] SelectedContact was lost after user list update!");
+                //}
+
+                Contacts = newContacts;
+                OnPropertyChanged(nameof(Contacts));
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] After update, Contacts.Count: {Contacts.Count}");
             });
         }
 

@@ -31,21 +31,30 @@ public class Program
             var tcpClient = await _server.AcceptTcpClientAsync();
 
 
-            if (_clients.Any(c => ((IPEndPoint)c.ClientSocket.Client.RemoteEndPoint).Address.Equals(
-                                   ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address)))
-            {
-                Console.WriteLine("Duplicate client detected, rejecting connection.");
-                tcpClient.Close();
-                continue;
-            }
+            //if (_clients.Any(c => ((IPEndPoint)c.ClientSocket.Client.RemoteEndPoint).Address.Equals( 
+            //                       ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address)))
+            //{
+            //    Console.WriteLine("Duplicate client detected, rejecting connection.");
+            //    tcpClient.Close();
+            //    continue;
+            //}
 
+
+            //need to uncomment this after testing
             var clientWrapper = new Client(tcpClient);
             clientWrapper.DirectMessageReceived += HandleDirectMessage;
             clientWrapper.Disconnected += HandleClientDisconnected;
-            _clients.Add(clientWrapper);
-            Console.WriteLine($"Client connected: {((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address}");
-            await BroadcastUser();
 
+            await clientWrapper.InitializationTask;
+            Console.WriteLine("Adding clients to _clients list");
+            _clients.Add(clientWrapper);
+            Console.WriteLine($"Client added. Total clients: {_clients.Count}");
+
+            Console.WriteLine("Before broadcast");
+            await BroadcastUser();
+            Console.WriteLine("User list broadcast completed");
+
+            Console.WriteLine($"Client connected: {((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address}");
         }
     }
 
@@ -97,30 +106,40 @@ public class Program
 
     private async Task BroadcastUser()
     {
-        var userList = _clients
-            .Select(c => c.Username?.Trim()) //MIGHT NEED TO REMOVE THIS-------------------------------------------------
-            .Where(u => !string.IsNullOrEmpty(u))
-            .ToList();
-
-        string UserListString = string.Join(",", userList);
-        System.Diagnostics.Debug.WriteLine($"[DEBUG] Sending user list: {UserListString}");
-
-        var packetBuilder = new PacketBuilder();
-        packetBuilder.WriteOpCode(2);
-        packetBuilder.WriteString(UserListString);
-        byte[] packetBytes = packetBuilder.GetPacketBytes();
-
         foreach (var client in _clients)
         {
+      
+            var userListForClient = _clients
+                .Where(c => c != client && !string.IsNullOrEmpty(c.Username?.Trim())) 
+                .Select(c => c.Username?.Trim())
+                .ToList();
+
+            string UserListString = string.Join(",", userListForClient);
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] Broadcasting user list to {client.Username}: {UserListString}");
+
+            var packetBuilder = new PacketBuilder();
+            packetBuilder.WriteOpCode(2);
+            packetBuilder.WriteString(UserListString);
+            byte[] packetBytes = packetBuilder.GetPacketBytes();
+
             try
             {
-                await client.ClientSocket.GetStream().WriteAsync(packetBytes, 0, packetBytes.Length);
+                if (client.ClientSocket.Connected) 
+                {
+                    await client.ClientSocket.GetStream().WriteAsync(packetBytes, 0, packetBytes.Length);
+                }
+                else
+                {
+                    Console.WriteLine($"[WARNING] Client {client.Username} disconnected, cannot broadcast user list.");
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error sending user list to {client.Username}: {ex.Message}");
+                Console.WriteLine($"[ERROR] Error broadcasting user list to {client.Username}: {ex.Message}");
             }
         }
     }
+
 }
+
 
