@@ -1,16 +1,20 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:ChatClient"
-    xmlns:converters="clr-namespace:ChatClient.Converters">
+    xmlns:converters="clr-namespace:ChatClient.Converters"
+    xmlns:local="clr-namespace:ChatClient">
+
     <converters:BoolToBrush
         x:Key="MessageBackgroundConverter"
-        FalseValue="#E0F7FA"
-        TrueValue="#DDDDDD" />
+        FalseValue="#ffffff"
+        TrueValue="#C4FFBF" />
+
     <converters:BoolToAlignment
         x:Key="MessageAlignmentConverter"
         FalseValue="Left"
-        TrueValue="Right"/>
+        TrueValue="Right" />
+
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
     <Style x:Key="ChatStyle" TargetType="ListViewItem">
         <Setter Property="Template">
@@ -37,7 +41,7 @@
                                 Fill="#56C54C" />
 
                             <StackPanel Grid.Row="0" Grid.Column="1">
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding FirstMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Label
                                         Content="{Binding Username, FallbackValue='(unknown user)'}"
                                         FontSize="11"
@@ -55,15 +59,16 @@
                                 <Border
                                     Grid.Row="1"
                                     MaxWidth="400"
+                                    Margin="0,2,0,0"
                                     Padding="10"
                                     HorizontalAlignment="{Binding IsOwnMessage, Converter={StaticResource MessageAlignmentConverter}}"
                                     Background="{Binding IsOwnMessage, Converter={StaticResource MessageBackgroundConverter}}"
                                     CornerRadius="10">
                                     <TextBlock
-                                        Text="{Binding Message}"
                                         FontSize="11"
                                         FontWeight="SemiBold"
                                         Foreground="#FF2F2E2E"
+                                        Text="{Binding Message}"
                                         TextWrapping="Wrap" />
                                 </Border>
                             </StackPanel>
@@ -72,6 +77,11 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding FirstMessage}" Value="False">
+                <Setter Property="Margin" Value="40,0,0,5" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

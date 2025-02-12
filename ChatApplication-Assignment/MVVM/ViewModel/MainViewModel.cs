@@ -169,12 +169,17 @@ namespace ChatClient.MVVM.ViewModel
             {
                 if (SelectedContact != null && message != null)
                 {
+                    string SenderUsername = message.Split(':')[0];
+                    string MessageText = message.Split(':')[1];
+                    bool isFirstMessage = !SelectedContact.Messages.Any() || SelectedContact.Messages.Last().Username != SenderUsername;
+
                     SelectedContact.Messages.Add(new MessageModel
                     {
-                        Username = message.Split(':')[0],
-                        Message = message.Split(':')[1],
+                        Username = SenderUsername,
+                        Message = MessageText,
                         Time = DateTime.Now,
-                        IsOwnMessage = false
+                        IsOwnMessage = false,
+                        FirstMessage = false
                     });
 
                     System.Diagnostics.Debug.WriteLine($"Message received and added to UI: {message}");
@@ -208,12 +213,15 @@ namespace ChatClient.MVVM.ViewModel
 
                         await _server.SendMessageAsync(packetBuilder.GetPacketBytes());
 
+                        bool isFirstMessage = !SelectedContact.Messages.Any() || SelectedContact.Messages.Last().Username != Username;
+
                         SelectedContact.Messages.Add(new MessageModel
                         {
                             Username = Username,
                             Message = Message,
                             Time = DateTime.Now,
-                            IsOwnMessage = true
+                            IsOwnMessage = true,
+                            FirstMessage = isFirstMessage
                         });
 
                         Message = string.Empty;
