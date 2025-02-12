@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:ChatClient"
     xmlns:converters="clr-namespace:ChatClient.Converters">
     <converters:BoolToBrush
         x:Key="MessageBackgroundConverter"
@@ -9,7 +10,8 @@
     <converters:BoolToAlignment
         x:Key="MessageAlignmentConverter"
         FalseValue="Left"
-        TrueValue="Right" />
+        TrueValue="Right"/>
+
     <Style x:Key="ChatStyle" TargetType="ListViewItem">
         <Setter Property="Template">
             <Setter.Value>
@@ -58,10 +60,10 @@
                                     Background="{Binding IsOwnMessage, Converter={StaticResource MessageBackgroundConverter}}"
                                     CornerRadius="10">
                                     <TextBlock
+                                        Text="{Binding Message}"
                                         FontSize="11"
                                         FontWeight="SemiBold"
                                         Foreground="#FF2F2E2E"
-                                        Text="{Binding Message}"
                                         TextWrapping="Wrap" />
                                 </Border>
                             </StackPanel>
