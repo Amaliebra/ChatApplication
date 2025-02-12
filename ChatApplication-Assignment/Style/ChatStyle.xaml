@@ -4,17 +4,21 @@
     xmlns:converters="clr-namespace:ChatClient.Converters"
     xmlns:local="clr-namespace:ChatClient">
 
-    <converters:BoolToBrush
+    <converters:BoolToBrushConverter
         x:Key="MessageBackgroundConverter"
         FalseValue="#ffffff"
         TrueValue="#C4FFBF" />
-
-    <converters:BoolToAlignment
+    <converters:BoolToAlignmentConverter
         x:Key="MessageAlignmentConverter"
         FalseValue="Left"
         TrueValue="Right" />
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+    <converters:BoolToColumnConverter x:Key="BoolToColumn" />
+    <converters:BoolToHorizontalAlignmentConverter x:Key="BoolToHorizontal" />
+    <converters:BoolToUsernameMarginConverter x:Key="BoolToUsername" />
+    <converters:BoolToBubbleMarginConverter x:Key="BoolToBubble" />
 
     <Style x:Key="ChatStyle" TargetType="ListViewItem">
         <Setter Property="Template">
@@ -25,6 +29,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -38,40 +43,46 @@
                                 Height="30"
                                 Margin="10,5,5,5"
                                 VerticalAlignment="Top"
-                                Fill="#56C54C" />
+                                Fill="#56C54C"
+                                Visibility="{Binding FirstMessage, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                            <StackPanel Grid.Row="0" Grid.Column="1">
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding FirstMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <Label
-                                        Content="{Binding Username, FallbackValue='(unknown user)'}"
-                                        FontSize="11"
-                                        FontWeight="SemiBold"
-                                        Foreground="{Binding UsernameColor, TargetNullValue='#000000', FallbackValue='Black'}" />
-                                    <Label
-                                        Margin="5,0,0,0"
-                                        VerticalAlignment="Center"
-                                        Content="{Binding Time, StringFormat='hh:mm tt', FallbackValue='No Time'}"
-                                        FontSize="9"
-                                        FontWeight="SemiBold"
-                                        Foreground="#FF2F2E2E" />
-                                </StackPanel>
-
-                                <Border
-                                    Grid.Row="1"
-                                    MaxWidth="400"
-                                    Margin="0,2,0,0"
-                                    Padding="10"
-                                    HorizontalAlignment="{Binding IsOwnMessage, Converter={StaticResource MessageAlignmentConverter}}"
-                                    Background="{Binding IsOwnMessage, Converter={StaticResource MessageBackgroundConverter}}"
-                                    CornerRadius="10">
-                                    <TextBlock
-                                        FontSize="11"
-                                        FontWeight="SemiBold"
-                                        Foreground="#FF2F2E2E"
-                                        Text="{Binding Message}"
-                                        TextWrapping="Wrap" />
-                                </Border>
+                            <StackPanel
+                                Grid.Row="0"
+                                Grid.Column="{Binding IsOwnMessage, Converter={StaticResource BoolToColumn}}"
+                                Margin="{Binding IsOwnMessage, Converter={StaticResource BoolToUsername}}"
+                                HorizontalAlignment="{Binding IsOwnMessage, Converter={StaticResource BoolToHorizontal}}"
+                                Orientation="Horizontal"
+                                Visibility="{Binding FirstMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Label
+                                    Content="{Binding Username, FallbackValue='(unknown user)'}"
+                                    FontSize="11"
+                                    FontWeight="SemiBold"
+                                    Foreground="{Binding UsernameColor, TargetNullValue='#000000', FallbackValue='Black'}" />
+                                <Label
+                                    Margin="5,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Content="{Binding Time, StringFormat='hh:mm tt', FallbackValue='No Time'}"
+                                    FontSize="9"
+                                    FontWeight="SemiBold"
+                                    Foreground="#FF2F2E2E" />
                             </StackPanel>
+
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="{Binding IsOwnMessage, Converter={StaticResource BoolToColumn}}"
+                                MaxWidth="400"
+                                Margin="{Binding IsOwnMessage, Converter={StaticResource BoolToBubble}}"
+                                Padding="10"
+                                HorizontalAlignment="{Binding IsOwnMessage, Converter={StaticResource MessageAlignmentConverter}}"
+                                Background="{Binding IsOwnMessage, Converter={StaticResource MessageBackgroundConverter}}"
+                                CornerRadius="10">
+                                <TextBlock
+                                    FontSize="11"
+                                    FontWeight="SemiBold"
+                                    Foreground="#FF2F2E2E"
+                                    Text="{Binding Message}"
+                                    TextWrapping="Wrap" />
+                            </Border>
                         </Grid>
                     </Border>
                 </ControlTemplate>
