@@ -10,7 +10,7 @@ Here are some of the functions im "planning" to include, depending on how smooth
 
 ### Challanges with the project
 - I wanted to use async. I had heard async would work better with multiple clients. And it was a real challenge going from what i used in my previous project. Changing everything just to try to get the async to work.
-- I had difficulties finding the source of the issues i had, as it was hard debugging.
+- I had difficulties finding the source of the issues i had, as it was hard debugging. Evident by the number of debug writeLines in the project.
 
 <br>
 <img src="ChatApplication-Assignment/Resources/First-gui-screenshot.png" width="500"/>
