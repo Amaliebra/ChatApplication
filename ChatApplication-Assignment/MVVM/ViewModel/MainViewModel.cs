@@ -167,12 +167,12 @@ namespace ChatClient.MVVM.ViewModel
         {
             _server.MessageReceivedEvent += (message) => Application.Current.Dispatcher.Invoke(() =>
             {
-                if (SelectedContact != null)
+                if (SelectedContact != null && message != null)
                 {
                     SelectedContact.Messages.Add(new MessageModel
                     {
-                        Username = "Other",  
-                        Message = message,
+                        Username = message.Split(':')[0],
+                        Message = message.Split(':')[1],
                         Time = DateTime.Now,
                         IsOwnMessage = false
                     });
