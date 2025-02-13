@@ -20,6 +20,10 @@ namespace ChatClient.MVVM.ViewModel
         private string _defaultColor = "#8a6130";
         private string _ownColor = "#56C54C";
 
+        private ContactModel _selectedContact;
+        private readonly Server _server;
+        private string _message;
+
         public string UsernameColor
         {
             get
@@ -30,12 +34,18 @@ namespace ChatClient.MVVM.ViewModel
             }
         }
 
-        private ContactModel _selectedContact;
-
-        private readonly Server _server = new Server();
-
-        private string _message;
-        private bool _isConnected = false;
+        private bool _isConnected;
+        public bool IsConnected
+        {
+            get => _isConnected;
+            set
+            {
+                _isConnected = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ConnectionStatusText));
+            }
+        }
+        public string ConnectionStatusText => IsConnected ? "Online" : "Offline";
 
         public ContactModel SelectedContact
         {
@@ -60,6 +70,7 @@ namespace ChatClient.MVVM.ViewModel
 
         public MainViewModel(string username)
         {
+            IsConnected = false;
             System.Diagnostics.Debug.WriteLine("MainViewModel called");
 
             Username = username ?? "DefaultUser";
@@ -67,8 +78,10 @@ namespace ChatClient.MVVM.ViewModel
             Contacts = new ObservableCollection<ContactModel>();
             Messages = new ObservableCollection<MessageModel>();
 
+            _server = new Server(this);
             _server.ConnectedEvent += UserConnected;
             _server.UserListUpdatedEvent += OnUserListUpdated;
+            _server.DisconnectedEvent += UserDisconnected;
             _server.ConnectToServerAsync(Username);
 
             InitializeCommands();
@@ -167,14 +180,19 @@ namespace ChatClient.MVVM.ViewModel
         {
             _server.MessageReceivedEvent += (message) => Application.Current.Dispatcher.Invoke(() =>
             {
-                if (SelectedContact != null)
+                if (SelectedContact != null && message != null)
                 {
+                    string SenderUsername = message.Split(':')[0];
+                    string MessageText = message.Split(':')[1];
+                    bool isFirstMessage = !SelectedContact.Messages.Any() || SelectedContact.Messages.Last().Username != SenderUsername;
+
                     SelectedContact.Messages.Add(new MessageModel
                     {
-                        Username = "Other",  
-                        Message = message,
+                        Username = SenderUsername,
+                        Message = MessageText,
                         Time = DateTime.Now,
-                        IsOwnMessage = false
+                        IsOwnMessage = false,
+                        FirstMessage = false
                     });
 
                     System.Diagnostics.Debug.WriteLine($"Message received and added to UI: {message}");
@@ -208,12 +226,15 @@ namespace ChatClient.MVVM.ViewModel
 
                         await _server.SendMessageAsync(packetBuilder.GetPacketBytes());
 
+                        bool isFirstMessage = !SelectedContact.Messages.Any() || SelectedContact.Messages.Last().Username != Username;
+
                         SelectedContact.Messages.Add(new MessageModel
                         {
                             Username = Username,
                             Message = Message,
                             Time = DateTime.Now,
-                            IsOwnMessage = true
+                            IsOwnMessage = true,
+                            FirstMessage = isFirstMessage
                         });
 
                         Message = string.Empty;
@@ -229,12 +250,17 @@ namespace ChatClient.MVVM.ViewModel
 
         }
 
-        //private async void RemoveUser()
-        //{
-        //    var uid = await _server.PacketReader.ReadStringAsync();
-        //    var user = Users.FirstOrDefault(x => x.UID == uid);
-        //    Application.Current.Dispatcher.Invoke(() => Users.Remove(user));
-        //}
+        public void UserDisconnected()
+        {
+            IsConnected = false; 
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                SelectedContact = null; 
+                Contacts.Clear();
+                OnPropertyChanged(nameof(Contacts));
+            });
+        }
 
         //private void MessageReceived(MessageModel message)
         //{
