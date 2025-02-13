@@ -1,14 +1,17 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ChatClient.MVVM.Model
 {
-    public class ChatMessage
+    public class ChatMessage 
     {
+        public string Text { get; set; }
+
         [JsonProperty("sender")]
         public string Sender { get; set; }
 

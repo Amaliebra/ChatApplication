@@ -118,8 +118,10 @@ namespace ChatClient.MVVM.ViewModel
             LoggedMessages.Clear();
             foreach (var message in messages)
             {
-                LoggedMessages.Add(message); 
+                LoggedMessages.Add(message);
+                System.Diagnostics.Debug.WriteLine($"Loaded message: {message.Text}");
             }
+            System.Diagnostics.Debug.WriteLine($"Total logged messages: {LoggedMessages.Count}");
         }
 
         private void OnUserListUpdated(List<string> userList)
