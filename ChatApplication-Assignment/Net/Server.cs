@@ -19,7 +19,12 @@ namespace ChatClient.Net
         public event Action DisconnectedEvent;
         public event Action<List<string>> UserListUpdatedEvent;
         private List<string> _connectedUsers = new();
+        private MainViewModel _mainViewModel;
 
+        public Server(MainViewModel mainViewModel)
+        {
+            _mainViewModel = mainViewModel;
+        }
         public async Task ConnectToServerAsync(string username, int maxRetries = 5, int delayRetries = 2000)
         {
             System.Diagnostics.Debug.WriteLine("Starting connection attempts...");
@@ -92,6 +97,7 @@ namespace ChatClient.Net
                             MessageReceivedEvent?.Invoke($"{senderUsername}: {messageText}");
                             break;
                         case 10:
+                            _mainViewModel.UserDisconnected();
                             DisconnectedEvent?.Invoke();
                             return;
                         default:
@@ -103,6 +109,7 @@ namespace ChatClient.Net
             catch (Exception ex)
             {
                 Console.WriteLine($"Error reading packet: {ex.Message}");
+                _mainViewModel.UserDisconnected();
                 DisconnectedEvent?.Invoke();
             }
         }

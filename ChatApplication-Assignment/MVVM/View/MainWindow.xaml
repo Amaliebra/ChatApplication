@@ -132,7 +132,7 @@
                         Foreground="#FF2F2E2E" />
                     <Label
                         Margin="0,-5,0,-5"
-                        Content="Online"
+                        Content="{Binding ConnectionStatusText}"
                         FontSize="10"
                         FontWeight="SemiBold"
                         Foreground="SlateGray" />
