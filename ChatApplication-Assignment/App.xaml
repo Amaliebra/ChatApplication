@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Style/ChatStyle.xaml" />
                 <ResourceDictionary Source="Style/ChatBox.xaml" />
                 <ResourceDictionary Source="Style/CustomScroll.xaml" />
+                <ResourceDictionary Source="Converters/Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

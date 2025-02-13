@@ -4,17 +4,19 @@ using ChatClient.Net;
 using System.Collections.ObjectModel;
 using System.Windows;
 using ChatClient.Net.IO;
+using ChatClient.Log;
 
 namespace ChatClient.MVVM.ViewModel
 {
-    //[PropertyChanged]
     class MainViewModel : ObservableObject
     {
+        public ObservableCollection<ChatMessage> LoggedMessages { get; set; } = new ObservableCollection<ChatMessage>();
         public ObservableCollection<UserModel> Users { get; private set; }
         public ObservableCollection<ContactModel> Contacts { get; private set; }
         public ObservableCollection<MessageModel> Messages { get; private set; }
         public RelayCommand SendMessageCommand { get; set; }
         public RelayCommand ServerConnectCommand { get; set; }
+
         public string Username { get; set; }
 
         private string _defaultColor = "#8a6130";
@@ -108,6 +110,16 @@ namespace ChatClient.MVVM.ViewModel
                 await _server.ConnectToServerAsync(Username);
                 System.Diagnostics.Debug.WriteLine($"Connection request sent for {Username}");
             });
+        }
+
+        private void LoadPreviousMessages()
+        {
+            List<ChatMessage> messages = ChatLogger.LoadLogs();
+            LoggedMessages.Clear();
+            foreach (var message in messages)
+            {
+                LoggedMessages.Add(message); 
+            }
         }
 
         private void OnUserListUpdated(List<string> userList)

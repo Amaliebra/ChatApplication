@@ -14,6 +14,7 @@
     ResizeMode="CanResizeWithGrip"
     WindowStyle="None"
     mc:Ignorable="d">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
@@ -182,14 +183,23 @@
 
                 </Grid>
             </Border>
-
             <ListView
                 Grid.Row="1"
                 Margin="8,0,0,0"
                 Background="Transparent"
                 BorderThickness="0"
                 ItemContainerStyle="{StaticResource ChatStyle}"
-                ItemsSource="{Binding SelectedContact.Messages, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                ItemsSource="{Binding LoggedMessages}"
+                Visibility="{Binding SelectedContact, Converter={StaticResource NullToVisibilityConverter}}" />
+            <ListView
+                x:Name="MessageListView"
+                Grid.Row="1"
+                Margin="8,0,0,0"
+                Background="Transparent"
+                BorderThickness="0"
+                ItemContainerStyle="{StaticResource ChatStyle}"
+                ItemsSource="{Binding SelectedContact.Messages, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                Visibility="{Binding SelectedContact, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=True}"/>
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />

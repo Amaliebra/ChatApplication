@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ChatClient.MVVM.Model;
+using ChatClient.Log;
 
 namespace ChatClient;
 
@@ -77,5 +78,24 @@ public partial class MainWindow : Window
             }
         }
     }
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+        LoadPreviousMessages();
+    }
 
+    private void LoadPreviousMessages()
+    {
+        List<ChatMessage> messages = ChatLogger.LoadLogs();
+
+        ListView messageListView = FindName("YourMessageListViewName") as ListView;
+
+        if (messageListView != null)
+        {
+            messageListView.ItemsSource = messages;
+        }
+        else
+        {
+            System.Diagnostics.Debug.WriteLine("Error: messageListView not found!");
+        }
+    }
 }
