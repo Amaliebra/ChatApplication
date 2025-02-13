@@ -10,7 +10,7 @@
                     <Border Background="#ffffff" CornerRadius="8">
                         <Grid>
                             <TextBox
-                                x:Name="Chatbox"
+                                x:Name="ChatBox"
                                 Margin="8,0,0,0"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
