@@ -16,15 +16,15 @@ Here are some of the functions im "planning" to include, depending on how smooth
 - I had difficulties finding the source of the issues i had, as it was hard debugging. Evident by the number of debug writeLines in the project.
 - Many of the issues were entirely caused by XAML, which was unexpected and took me far too long to diagnose. Small syntax and binding issues prevented the app from running for days.
 
-
+<img src="ChatApplication-Assignment/Resources/MainWindow.png" width="400"/>
 <br>
-<img src="ChatApplication-Assignment/Resources/LoginWindow.png" width="500"/>
+<img src="ChatApplication-Assignment/Resources/LoginWindow.png" width="400"/>
 Latest look of the `LoginWindow` and the placeholder usernames.
-<img src="ChatApplication-Assignment/Resources/First-gui-screenshot.png" width="500"/>
+<img src="ChatApplication-Assignment/Resources/First-gui-screenshot.png" width="400"/>
 Early on in the project, i made this design in xaml. But i soon realized that some of the pieces i used, didnt have the nessecary presets or settings that i needed to link the design with the backend part.<br>
-<img src="ChatApplication-Assignment/Resources/excalidraw-diagram.png" width="500"/> <br>
+<img src="ChatApplication-Assignment/Resources/excalidraw-diagram.png" width="400"/> <br>
 I made this diagram before starting the project, to show a rough idea of the function of the app.
-
+<img src="ChatApplication-Assignment/Resources/Terminal.png" width="500"/>
 ### What the app does at its current stage:
 When you launch the app, both the server (with a console) and the client start. The client initially opens the `LoginWindow`, which currently serves as a placeholder but generates a random "edgy" username on launch. Pressing the login button closes the `LoginWindow` and opens the `MainWindow`, where the client attempts to connect to the server. The server is hardcoded to run on a specific IP (placeholder), but other computers on the same network can connect and will be able to see each other in the contacts list. Clicking on one of the contacts, will make you able to send direct messages to that client.
 
