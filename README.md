@@ -41,6 +41,12 @@ When you launch the app, both the server (with a console) and the client start. 
 - Logic and ui is separated.
 - Can be used over LAN, no internet required.
 
+## How to run
+- Fork/Clone repo from github
+- In VS right click solution > Properties > Multiple startup projects(or manually open the exe file from debug folder).
+- Choose action for `ChatClient` and `ChatServer` to start.
+- Make sure  `ChatServer` launches first.
+
 ### Resources made by someone else: 
 <div> Icons made by <a href="https://www.flaticon.com/authors/those-icons" title="Those Icons"> Those Icons </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>
 <div> Icons made by <a href="https://www.flaticon.com/authors/tanah-basah" title="Tanah Basah"> Tanah Basah </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>
