@@ -5,16 +5,16 @@ Here are some of the functions im "planning" to include, depending on how smooth
 - Sounds based on events(receiving a message, login).
 - ~~Additional view (Maybe a small window of some sort. Hopefully)~~ :white_check_mark:
 - ~~Some form of way to handle username. Either given at random(placeholder) or type in username, with no requirements(Also placeholder with no saving)~~ :white_check_mark:
-- encryption (end to end? Api possibly. Low priority).
+- End to end encryption (skipped for now, as it needed to much changes to preexisting systems). ❌ 
 - try to use it off of local internet.(probably not going to happen within the deadline)
 - ~~Direct message instead of broadcasting to all clients~~ :white_check_mark: <br>
-- displaying `LastMessage`, `FirstMessage` and `IsOwnMessage` correctly, with colors and bubbles.
+- ~~displaying `LastMessage`, `FirstMessage` and `IsOwnMessage` correctly, with colors and bubbles.~~ :white_check_mark:
 - have the server use a none hardcoded ip.
 
 ### Challanges with the project
-- I wanted to use async. I had heard async would work better with multiple clients. And it was a real challenge going from what i used in my previous project. Changing everything just to try to get the async to work.
+- I decided to use asynchronous programming because I had heard it would improve performance when handling multiple clients. Implementing async was a real challenge since it required, pretty much every part of the application, from top to bottom, to be asynchronous.
 - I had difficulties finding the source of the issues i had, as it was hard debugging. Evident by the number of debug writeLines in the project.
-- A bunch of the issues was caused entirely by xaml, which was unexpected, and it took me too long to figure out.
+- Many of the issues were entirely caused by XAML, which was unexpected and took me far too long to diagnose. Small syntax and binding issues prevented the app from running for days.
 
 
 <br>
@@ -26,12 +26,13 @@ Early on in the project, i made this design in xaml. But i soon realized that so
 I made this diagram before starting the project, to show a rough idea of the function of the app.
 
 ### What the app does at its current stage:
-When you launch the app, both the server (with a console) and the client start. The client initially opens the `LoginWindow`, which currently serves as a placeholder but generates a random "cringy" username on launch. Pressing the login button closes the `LoginWindow` and opens the `MainWindow`, where the client attempts to connect to the server.  
-Currently, the only indication of a successful connection from the client side is seeing your own username in the contacts list (used as a placeholder for testing). The server is hardcoded to run on a specific IP (placeholder), but other computers on the same network can connect and will be able to see each other in the contacts list.
+When you launch the app, both the server (with a console) and the client start. The client initially opens the `LoginWindow`, which currently serves as a placeholder but generates a random "edgy" username on launch. Pressing the login button closes the `LoginWindow` and opens the `MainWindow`, where the client attempts to connect to the server. The server is hardcoded to run on a specific IP (placeholder), but other computers on the same network can connect and will be able to see each other in the contacts list. Clicking on one of the contacts, will make you able to send direct messages to that client.
+
 ## Features
 - Custom scrollbar.
 - Custom minimize, maximize and exit buttons and windowbar with name and logo.
 - Reasizable window, with dragging function.
+- Status indication for server connection.
 - Asynchronous socket handling.
 - Real-time messaging.
 - Dynamically updates connected users.
