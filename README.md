@@ -17,6 +17,7 @@ Here are some of the functions im "planning" to include, depending on how smooth
 - Many of the issues were entirely caused by XAML, which was unexpected and took me far too long to diagnose. Small syntax and binding issues prevented the app from running for days.
 
 <img src="ChatApplication-Assignment/Resources/MainWindow.png" width="400"/>
+`MainWindow` at this current stage, with chatbubbles differantiating who sends what. Needs some final adjustments on "image" placement, and recieving username.
 <br>
 <img src="ChatApplication-Assignment/Resources/LoginWindow.png" width="400"/>
 Latest look of the `LoginWindow` and the placeholder usernames.
@@ -24,9 +25,10 @@ Latest look of the `LoginWindow` and the placeholder usernames.
 Early on in the project, i made this design in xaml. But i soon realized that some of the pieces i used, didnt have the nessecary presets or settings that i needed to link the design with the backend part.<br>
 <img src="ChatApplication-Assignment/Resources/excalidraw-diagram.png" width="400"/> <br>
 I made this diagram before starting the project, to show a rough idea of the function of the app.
-<img src="ChatApplication-Assignment/Resources/Terminal.png" width="500"/>
+<img src="ChatApplication-Assignment/Resources/Terminal.png" width="400"/><br>
+
 ### What the app does at its current stage:
-When you launch the app, both the server (with a console) and the client start. The client initially opens the `LoginWindow`, which currently serves as a placeholder but generates a random "edgy" username on launch. Pressing the login button closes the `LoginWindow` and opens the `MainWindow`, where the client attempts to connect to the server. The server is hardcoded to run on a specific IP (placeholder), but other computers on the same network can connect and will be able to see each other in the contacts list. Clicking on one of the contacts, will make you able to send direct messages to that client.
+When you launch the app, both the server (with a console) and the client start. The client initially opens the `LoginWindow`, which currently serves as a placeholder but add a random "edgy" username from a list, on launch. Pressing the login button closes the `LoginWindow` and opens the `MainWindow`, where the client attempts to connect to the server. The server is hardcoded to run on a specific IP (placeholder), but other computers on the same network can connect and will be able to see each other in the contacts list. Clicking on one of the contacts, will make you able to send direct messages to that client.
 
 ## Features
 - Custom scrollbar.
