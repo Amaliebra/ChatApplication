@@ -16,7 +16,7 @@ public class Program
 
     public static async Task Main(string[] args)
     {
-        var program = new Program("192.168.0.20", 5000);
+        var program = new Program("127.0. 0.1", 5000);
         await program.StartAsync();
     }
 
